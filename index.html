@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SAVE DKU | AX-EL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'Freesentation';src:url('fonts/Freesentation-7Bold.woff2') format('woff2');font-weight:700;font-display:swap}
+@font-face{font-family:'Freesentation';src:url('fonts/Freesentation-9Black.woff2') format('woff2');font-weight:900;font-display:swap}
+/* VOICE: 젊고 산뜻한 미션 게임. 교수님을 '요원'으로 초대하되 말투는 정중함
+   IDEA: 몽환적인 파스텔 하늘 위의 홀로그램 프로젝터 — 미션을 깰 때마다 단국대 평가 시스템 복구율이 올라감
+   PICTURE: 클레이 질감의 프로젝터, 유리 패널, 머그, 구슬 오브젝트, 뒤로 흐르는 거대한 세리프 티커
+   COLOUR and TYPE: 라벤더→핑크→피치 하늘, 바이올렛 강조, 유리 카드. Instrument Serif(영문 디스플레이) + Freesentation(국문 헤드라인) + Noto Sans KR 본문
+   LAYOUT: 히어로(이름 입력→출발) → 스쿼드 선택 → 좌측 세로 내비 + 미션 카드 + 우측 AI 코파일럿 */
+:root{color-scheme:light;--ink:#2c2a63;--mut:#5b5880;--vio:#f05d2d;--vio2:#d9481c;--peach:#ffb37a;--pink:#fe8739;--mint:#2fbf8f;--glass:rgba(255,255,255,.58);--glass2:rgba(255,255,255,.78);--edge:rgba(255,255,255,.85);--line:rgba(107,92,255,.22)}
+:root[data-theme=dark],:root[data-theme=light]{color-scheme:light}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:120px}
+body{margin:0;color:var(--ink);font:16px/1.6 'Noto Sans KR',system-ui,sans-serif;overflow-x:clip;min-height:100vh;
+ background:linear-gradient(180deg,#005eb7 0%,#2f80d3 38%,#9cc4ec 66%,#ffe6af 100%) fixed}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:
+ radial-gradient(40% 18% at 12% 62%,#fff4dd88 0,#fff0 70%),radial-gradient(36% 16% at 86% 54%,#fff4dd99 0,#fff0 70%),radial-gradient(50% 20% at 50% 92%,#fff4ddaa 0,#fff0 70%)}
+.serif{font-family:'Instrument Serif';font-style:italic,serif;font-weight:400}
+.kserif{font-family:'Freesentation','Noto Sans KR',sans-serif;font-weight:900}
+button{font:inherit;color:inherit;cursor:pointer}
+.btn{border:0;border-radius:999px;padding:12px 24px;min-height:46px;background:var(--ink);color:#fff;font-weight:700;box-shadow:0 8px 24px #2c2a6333}
+.btn:hover{background:var(--vio2)}.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.big{font-size:20px;padding:14px 40px;min-height:56px;background:linear-gradient(135deg,var(--vio),var(--pink));box-shadow:0 12px 36px #f05d2d55}
+.ghost{border:1px solid var(--edge);background:var(--glass);backdrop-filter:blur(12px);border-radius:999px;padding:10px 18px;min-height:44px;font-weight:500}
+.ghost:hover{background:var(--glass2)}.ghost.s{padding:6px 14px;min-height:38px;font-size:14px}
+:focus-visible{outline:3px solid var(--vio);outline-offset:2px}
+.glass{background:var(--glass);border:1px solid var(--edge);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-radius:26px;box-shadow:0 20px 50px #d9481c14}
+.note{font-size:13px;color:var(--mut)}
+/* hero */
+.hero{position:relative;background:#005eb7;overflow:hidden;min-height:100vh;display:flex;flex-direction:column}
+.art{position:relative;z-index:1;width:100%;margin:0}.art img{display:block;width:100%;height:auto}
+.start.mini{width:min(380px,92vw);padding:5px;margin:14px auto 10px;box-shadow:0 10px 30px #00306a40}.start.mini input{font-size:16px;min-height:40px;padding:6px 14px}.btn.go{min-height:40px;padding:8px 22px;font-size:16px;background:linear-gradient(135deg,var(--vio),var(--pink))}
+.nametag{position:absolute;left:50%;top:2%;transform:translateX(-50%);background:#ffffffe6;border-radius:999px;padding:8px 22px;font-size:clamp(14px,1.8vw,20px);color:var(--ink);white-space:nowrap;box-shadow:0 10px 30px #00306a40}.nametag b{font-family:'Freesentation','Noto Sans KR';font-weight:900}
+.ground{background:#fe8739;padding:12px 16px 40px;position:relative;z-index:2;flex:1}
+.brand{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;padding:16px max(4vw,16px);position:relative;z-index:3;color:#fff}
+.brand b{font-weight:900;letter-spacing:0}.brand .dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--vio);margin-right:8px}
+.hero-c{position:relative;display:grid;justify-items:center;text-align:center;padding:10px 16px 0;z-index:2}
+.hello{font-family:'Instrument Serif';font-style:italic;font-size:clamp(24px,3.2vw,36px);color:#fff;margin:6px 0 0;text-shadow:0 2px 20px #00306a66}
+.hero h1{font-family:'Freesentation','Noto Sans KR';font-weight:900;font-size:clamp(40px,7vw,84px);line-height:1.05;margin:4px 0 6px;color:#fff;text-wrap:balance;text-shadow:0 4px 30px #00306a88;position:relative;z-index:2}
+.welcome{font-size:clamp(16px,2vw,19px);color:#fff;font-weight:500;margin:0;position:relative;z-index:2}
+.welcome b{background:#ffffff33;border:1px solid #fff9;border-radius:999px;padding:2px 12px}
+.ticker{position:absolute;left:0;right:0;top:58%;transform:translateY(-50%);white-space:nowrap;pointer-events:none;z-index:0;overflow:hidden}
+.ticker div{display:inline-block;font-family:'Instrument Serif';font-style:italic;font-size:clamp(90px,16vw,210px);line-height:1;color:transparent;-webkit-text-stroke:1.2px #ffffff59;animation:tick 48s linear infinite}
+.ticker span{color:#ffffff1f;-webkit-text-stroke:0}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.device{width:min(680px,96vw);aspect-ratio:600/400;position:relative;z-index:1;margin-top:-6px}
+.device svg{width:100%;height:100%;display:block;overflow:visible}
+.start{position:relative;z-index:3;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;padding:10px;border-radius:999px;margin:0 auto 14px;max-width:560px;background:#fffffff0}
+.start input{flex:1 1 220px;border:0;background:transparent;font:500 17px 'Noto Sans KR';padding:10px 16px;color:var(--ink);min-height:46px}
+.start input::placeholder{color:#7a74a3}
+.story-hero{max-width:680px;margin:0 auto;color:#2c2a63;font-size:15px;padding:14px 20px;position:relative;z-index:3}
+.vnav{display:flex;align-items:center;gap:18px}
+.vnav button{border:0;background:none;color:#fff;font-weight:500;padding:6px 0;font-size:15px;opacity:.85;min-height:40px}
+.vnav button.on{font-family:'Instrument Serif';font-style:italic;font-size:22px;opacity:1}
+.toggle{display:flex;align-items:center;gap:10px;color:#fff;font-size:14px;border:0;background:none}
+.toggle i{width:46px;height:26px;border-radius:99px;background:#ffffff55;position:relative;border:1px solid #fffa}
+.toggle i::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .25s}
+.toggle.on i{background:var(--vio)}.toggle.on i::after{left:22px}
+body.still .ticker div,body.still .float,body.still .spin{animation:none}
+.float{animation:float 5s ease-in-out infinite}.spin{transform-origin:300px 250px;animation:spin 60s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.float.b{animation-delay:-2.5s}
+@keyframes float{50%{transform:translateY(-8px)}}
+@media(prefers-reduced-motion:reduce){.ticker div,.float,.spin{animation:none}}
+@media(max-width:700px){.vnav{display:none}}
+/* pick */
+.wrap{max-width:1240px;margin:0 auto;padding:clamp(18px,3vw,36px) max(4vw,16px)}
+.pick h2{font-family:'Freesentation','Noto Sans KR';font-weight:900;font-size:clamp(30px,4.6vw,48px);line-height:1.1;margin:8px 0 6px}
+.squads{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:22px 0}
+.sq{text-align:left;padding:20px;min-height:190px;display:flex;flex-direction:column;gap:6px;border-radius:24px;border:2px solid var(--edge);background:var(--glass);backdrop-filter:blur(16px)}
+.sq.on{border-color:var(--vio);box-shadow:0 0 0 5px #f05d2d33}
+.sq .code{font-family:'Instrument Serif';font-style:italic;font-size:40px;line-height:1}
+.sq .ar{font-weight:700}.sq small{color:var(--mut)}
+.chipc{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;border-radius:99px;padding:3px 10px;background:#fff;align-self:flex-start}
+.chipc i{width:9px;height:9px;border-radius:50%}
+/* app shell */
+.shell{display:grid;grid-template-columns:200px minmax(0,1fr);gap:22px;max-width:1300px;margin:0 auto;padding:18px max(3vw,14px) 40px}
+.side{position:sticky;top:16px;align-self:start;display:grid;gap:14px}
+.me{padding:16px}.me .code{font-family:'Instrument Serif';font-style:italic;font-size:34px;line-height:1}.me small{display:block;color:var(--mut);font-size:13px}
+.xp-l{display:flex;justify-content:space-between;font-size:12px;color:var(--mut);margin:10px 0 4px}.xp-l b{color:var(--vio2)}
+.bar{height:8px;border-radius:99px;background:#ffffff99;overflow:hidden}.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--vio),var(--pink));transition:width .5s}
+.mlist{display:grid;gap:2px;padding:10px}
+.mlist button{display:flex;align-items:center;gap:10px;border:0;background:none;border-radius:14px;padding:8px 10px;text-align:left;min-height:44px}
+.mlist button:hover{background:#ffffff88}.mlist button.cur{background:#fff}
+.mlist .n{font-family:'Instrument Serif';font-style:italic;font-size:20px;width:30px;color:var(--mut)}
+.mlist .done .n{color:var(--mint)}.mlist b{display:block;font-size:14px;line-height:1.25}.mlist small{display:block;font-size:11px;color:var(--mut)}
+.sidelinks{display:grid;gap:6px}
+.net{font-size:12px;color:var(--mut);padding-left:6px}
+@media(max-width:900px){.shell{grid-template-columns:1fr}.side{position:static;grid-template-columns:1fr}.mlist{grid-auto-flow:column;grid-auto-columns:max-content;overflow-x:auto}.sidelinks{grid-auto-flow:column;overflow-x:auto}}
+.main{display:grid;gap:18px;align-content:start}
+.recover{display:flex;align-items:center;gap:14px;padding:12px 18px}
+.recover .pct{font-family:'Instrument Serif';font-style:italic;font-size:34px;line-height:1}.recover .bar{flex:1;height:10px}
+.brief{padding:clamp(20px,3vw,34px);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px}
+.brief .mno{font-family:'Instrument Serif';font-style:italic;font-size:22px;color:var(--vio2)}
+.brief h2{font-family:'Freesentation','Noto Sans KR';font-weight:900;font-size:clamp(30px,4.4vw,48px);line-height:1.08;margin:2px 0 10px}
+.meta{display:flex;flex-wrap:wrap;gap:8px;font-size:13px;margin-bottom:10px}
+.pill{border-radius:99px;padding:3px 12px;background:#fff;color:var(--mut);white-space:nowrap}
+.pill.off{background:var(--ink);color:#fff;font-weight:700}.pill.time b{color:var(--vio2)}
+.story{margin:0 0 12px;max-width:68ch;color:#2c2752}
+.mission{background:#fff;border-radius:16px;padding:12px 16px;font-weight:500}
+.mission::before{content:"MISSION";font-family:'Instrument Serif';font-style:italic;color:var(--pink);margin-right:10px;font-size:18px}
+.aibox{display:grid;gap:8px;min-width:180px;align-content:start}
+.aibox .lumi{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--mut)}
+.no-ai .aibox,.no-ai .aigen{display:none}
+@media(max-width:700px){.brief{grid-template-columns:1fr}.aibox{grid-template-columns:1fr 1fr}.aibox .lumi{grid-column:1/-1}}
+.card{background:var(--glass2);border:1px solid var(--edge);backdrop-filter:blur(16px);border-radius:24px;padding:clamp(16px,2.4vw,26px)}
+.card h3{margin:0 0 4px;font-size:20px}.card .sub{color:var(--mut);font-size:14px;margin:0 0 14px}
+.off-card{background:var(--ink);color:#fff;border:0}.off-card h3::before{content:"OFFLINE | ";font-family:'Instrument Serif';font-style:italic;color:var(--peach);font-weight:400}
+.off-card ol{margin:6px 0 0;padding-left:20px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:14px}
+.f{display:grid;gap:6px;margin-bottom:12px}.f>span{font-size:14px;font-weight:500}
+input,textarea,select{width:100%;font:16px/1.5 'Noto Sans KR',sans-serif;color:var(--ink);background:#ffffffcc;border:1px solid #cfdff2;border-radius:14px;padding:10px 12px;min-height:44px}
+textarea{resize:vertical}input::placeholder,textarea::placeholder{color:#9c97bd}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.lt{display:flex;align-items:center;gap:8px;border:1px solid #cfdff2;background:#fff;border-radius:12px;padding:8px 12px;min-height:44px;cursor:pointer}
+.lt input{width:auto;min-height:0;accent-color:var(--vio)}.lt i{width:14px;height:14px;border-radius:50%}
+.lt.g i{background:#2fbf8f}.lt.y i{background:#ffbf3d}.lt.r i{background:#ff5d6c}.lt:has(input:checked){border-color:var(--vio);box-shadow:0 0 0 3px #f05d2d22}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border-radius:12px;padding:7px 12px;font-size:14px;background:#fff}
+.chip.v{background:#e3eefb;color:#0b4f9c}.chip.e{background:#fff0e6;color:#a4471f}.chip.m{background:#e4f8f0;color:#16775a}
+.lane{border-radius:16px;padding:14px;margin:10px 0}.lane.o{background:#e4f8f0}.lane.s{background:#ffe9ef}
+.lane h4{margin:0 0 8px;font-size:15px}
+.ign{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:16px 22px}
+.ign p{margin:0;color:var(--mut)}.ign .need{color:#c2335f}
+.quiz{display:grid;gap:10px}.qi{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;background:#fff;border:2px solid transparent;border-radius:16px;padding:12px 14px}
+.qi .ops{display:flex;gap:6px;flex-wrap:wrap}.qi .ops button{border:1px solid #cfdff2;background:#fff;border-radius:999px;min-height:40px;padding:6px 14px}
+.qi.ok{border-color:#2fbf8f}.qi.no{border-color:#ff5d6c}.qi .fb{grid-column:1/-1;font-size:14px;color:var(--mut)}
+.qi button.pick{background:var(--ink);color:#fff;border-color:var(--ink)}
+@media(max-width:600px){.qi{grid-template-columns:1fr}}
+.bars{display:grid;gap:8px}.br{display:grid;grid-template-columns:minmax(0,1fr) 46px;gap:10px;align-items:center;font-size:14px}
+.br .t{position:relative;padding:8px 10px;border-radius:10px;background:#fff;overflow:hidden}
+.br .t i{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,#f05d2d2e,#ff6fae2e);border-right:3px solid var(--vio)}
+.br .t span{position:relative}.br .t em{font-style:normal;color:var(--vio2);font-weight:700;margin-right:6px}.br b{text-align:right;color:var(--vio2)}
+.cand{display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:8px;margin-bottom:8px}
+.stamp{display:flex;align-items:center;gap:14px;margin-top:10px;font-weight:700}
+.stamp svg{width:84px;height:84px;flex:none;transition:transform .4s,opacity .4s}.stamp.off svg{opacity:.2;transform:rotate(-20deg) scale(.9)}
+.chk{display:flex;gap:10px;align-items:flex-start;padding:8px 0}.chk input{width:22px;height:22px;min-height:0;accent-color:var(--vio);margin-top:2px}
+.rub{display:grid;grid-template-columns:70px minmax(0,1fr);gap:8px;align-items:start}.rub b{padding-top:10px;font-size:14px;color:var(--vio2)}
+/* book & hq */
+.book{display:grid;grid-template-columns:240px minmax(0,1fr);gap:18px}
+@media(max-width:900px){.book{grid-template-columns:1fr}}
+.toc{display:grid;gap:6px;align-content:start}
+.toc button{text-align:left;border:1px solid var(--edge);background:var(--glass);border-radius:16px;padding:10px 14px;min-height:44px}
+.toc button.on{background:#fff;border-color:var(--vio)}.toc small{display:block;color:var(--mut);font-size:12px}
+.doc{background:#fffdf9;color:#1d2422;border-radius:24px;padding:clamp(18px,4vw,52px);font-size:16px;line-height:1.75;box-shadow:0 20px 50px #d9481c1f}
+.doc h2{font-family:'Freesentation','Noto Sans KR';font-weight:900;font-size:30px;line-height:1.2;margin:0 0 10px;color:#0b4f9c}
+.doc h3{font-size:22px;margin:34px 0 8px;color:#0b4f9c;border-bottom:2px solid #0b4f9c;padding-bottom:4px}
+.doc h4{font-size:18px;margin:22px 0 6px}.doc h5{font-size:16px;margin:16px 0 4px}
+.doc table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px}.doc th,.doc td{border:1px solid #d6d1e8;padding:7px 9px;text-align:left;vertical-align:top}
+.doc th{background:#e3eefb}.doc blockquote{margin:12px 0;padding:10px 14px;background:#fff1f6;border-left:4px solid var(--pink)}
+.doc mark{background:#ffe6d6;color:#8a2a10;padding:0 4px;border-radius:4px}.doc ul{padding-left:22px}.doc .empty{color:#6b6b6b}
+.scroll{overflow-x:auto}
+.hq table{width:100%;border-collapse:collapse;font-size:14px}.hq th,.hq td{border-bottom:1px solid #cfdff2;padding:10px 8px;text-align:left;vertical-align:middle}
+.dots{display:flex;gap:4px}.dots i{width:14px;height:14px;border-radius:50%;background:#fff;border:1px solid #cfdff2}.dots i.on{background:var(--vio);border-color:var(--vio)}
+.ring{width:150px;height:150px;flex:none}
+/* ai */
+#ai{position:fixed;right:16px;top:16px;bottom:16px;width:min(420px,calc(100vw - 32px));background:#ffffffee;backdrop-filter:blur(20px);border:1px solid #fff;border-radius:26px;z-index:40;display:flex;flex-direction:column;box-shadow:0 30px 80px #0b4f9c40}
+#ai[hidden]{display:none}
+.ai-h{display:flex;gap:12px;align-items:center;padding:14px 16px;border-bottom:1px solid #e3eefb}
+.ai-h b{font-family:'Instrument Serif';font-style:italic;font-size:26px;font-weight:400}.ai-h small{display:block;color:var(--mut);font-size:13px}
+.ai-h .x{margin-left:auto;border:1px solid #e3eefb;background:#fff;border-radius:50%;width:40px;height:40px;font-size:20px}
+.ai-out{padding:16px;overflow:auto;flex:1;white-space:pre-wrap;font-size:15px}
+.ai-f{padding:12px 16px;border-top:1px solid #e3eefb;display:flex;gap:8px;flex-wrap:wrap}
+.dp{display:grid;gap:8px}.dp div{background:#eef4fc;border-radius:12px;padding:8px 10px;font-size:14px}.dp small{display:block;color:var(--vio2);font-size:12px;font-weight:700}
+@media(max-width:700px){#ai{top:auto;height:72vh;left:8px;right:8px;width:auto;bottom:8px}}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:999px;padding:10px 18px;font-size:14px;z-index:60;opacity:0;pointer-events:none;transition:opacity .3s}
+#toast.on{opacity:1}
+#fx{position:fixed;inset:0;z-index:70;display:none;place-items:center;background:radial-gradient(circle at 50% 45%,#ffffffdd,#b4b0f4ee 60%);text-align:center;padding:20px}
+#fx.on{display:grid}#fx .in{max-width:540px}
+#fx .clear{font-family:'Instrument Serif';font-style:italic;font-size:clamp(52px,10vw,96px);line-height:1;margin:0;background:linear-gradient(90deg,var(--vio),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+#fx h2{font-family:'Freesentation','Noto Sans KR';font-weight:900;font-size:clamp(24px,4vw,34px);margin:8px 0}
+#fx p{font-size:17px;margin:6px 0 20px}
+.badge{display:inline-block;background:var(--ink);color:#fff;border-radius:99px;padding:4px 16px;font-weight:700}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="config.js"></script>
+<aside id="ai" hidden aria-label="AI 코파일럿">
+  <div class="ai-h">
+    <svg width="46" height="46" viewBox="0 0 46 46" aria-hidden="true"><defs><radialGradient id="lg" cx=".35" cy=".3"><stop offset="0" stop-color="#fff"/><stop offset=".5" stop-color="#7fb4ea"/><stop offset="1" stop-color="#f05d2d"/></radialGradient></defs><circle cx="23" cy="23" r="21" fill="url(#lg)"/><circle cx="17" cy="22" r="3" fill="#2c2a63"/><circle cx="29" cy="22" r="3" fill="#2c2a63"/><path d="M18 30 Q23 34 28 30" stroke="#2c2a63" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+    <div><b>LUMI</b><small id="ai-mode">AI 코파일럿</small></div>
+    <button class="x" data-act="closeai" aria-label="닫기">×</button>
+  </div>
+  <div id="ai-out" class="ai-out"></div>
+  <div id="ai-f" class="ai-f"></div>
+</aside>
+<div id="toast" role="status"></div>
+<div id="fx" role="dialog" aria-live="polite"></div>
+<script>
+{
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const DOM={
+A:{ch:'A',name:'텍스트, 사고',code:'READ',color:'#f05d2d',q:'학생은 왜 그렇게 읽고 판단했는가',diag:'완성된 감상문, 보고서, 번역문에서 해석의 근거가 보이지 않을 때',verbs:['해석한다','논증한다','반론에 응답한다','주장을 수정한다'],open:'AI 해석을 원문과 대조할 때',sec:'처음 보는 구절을 직접 해석하게 할 때',tasks:[['독해, 글쓰기','일반 감상문을 원문 근거가 표시된 해석문과 새 구절에 대한 응답으로 바꾸기'],['어학, 번역','완성 번역문을 번역 후보 비교와 표현 선택 근거로 확장하기']],grade:'원문 근거의 정확성, 근거와 해석의 연결, 반론에 따른 판단 수정',kit:'원문 대조표, 학생 안내문, 해석, 논증 루브릭'},
+B:{ch:'B',name:'응용, 문제해결',code:'SOLVE',color:'#2f8cff',q:'조건이 바뀌어도 학생은 다시 판단할 수 있는가',diag:'최종 설계안, 제안서, 팀 산출물에서 선택의 이유와 개인 기여가 보이지 않을 때',verbs:['문제를 정의한다','대안을 비교한다','해결안을 선택한다','새 조건에서 재판단한다'],open:'AI로 대안을 탐색하고 검증할 때',sec:'새 제약조건에서 학생의 독립적 판단을 확인할 때',tasks:[['설계 제안서','최종 해결안에 대안 비교표와 조건 변경 후 판단 메모를 더하기'],['캡스톤디자인','팀 결과물과 함께 개인 작업의 증거와 동료평가 근거 확인하기']],grade:'비교 기준의 일관성, 제약조건 반영, 선택 근거, 개인 기여',kit:'대안 비교표, 조건 변경 문항, 개인 기여 확인 양식, 문제해결 루브릭'},
+C:{ch:'C',name:'연구, 임상',code:'PROOF',color:'#18a87a',q:'학생은 근거를 확인하고 판단의 한계까지 설명할 수 있는가',diag:'연구 보고서, 사례 발표에서 근거 검증과 실제 판단 과정이 보이지 않을 때',verbs:['출처를 검증한다','자료를 해석한다','판단을 정당화한다','불확실성을 설명한다'],open:'AI가 제안한 근거를 원자료로 검증할 때',sec:'새로운 사례에서 판단 순서를 직접 확인할 때',tasks:[['연구 보고서, 발표','문헌 요약을 출처 검증표와 결론의 한계 설명으로 확장하기'],['임상 사례 과제','완성된 사례 보고서에 가상 사례의 추가 정보에 따른 재판단과 현장 질의를 연결하기']],grade:'근거의 적절성, 자료와 결론의 연결, 추가 정보에 따른 판단 변화, 불확실성 설명',kit:'출처 검증표, 가상 사례 질문지, 근거 기반 판단 루브릭, 민감정보 점검표'},
+D:{ch:'D',name:'창작, 실기',code:'MAKE',color:'#ff7a4d',q:'완성작에서 학생의 선택과 직접 수행을 어떻게 볼 것인가',diag:'완성작, 공연 영상만으로 창작 과정과 실제 수행을 파악하기 어려울 때',verbs:['구상한다','선택한다','제작한다','시연한다','피드백을 반영해 수정한다'],open:'AI를 활용해 시안을 탐색할 때',sec:'핵심 기법이나 실기 수행을 현장에서 관찰할 때',tasks:[['창작, 디자인','완성작 제출에 시안 선택 이유, 수정 전후, AI 활용 공개를 더하기'],['음악, 실기','최종 영상에 핵심 구간 현장 시연과 피드백 반영을 연결하기']],grade:'창작 의도와 구현의 연결, 수정의 타당성, 핵심 기법의 수행',kit:'창작 과정 기록지, AI, 외부 자료 활용 표기 양식, 실기 관찰표, 창작, 실기 루브릭'},
+E:{ch:'E',name:'교육, 사범',code:'TEACH',color:'#ff4f9a',q:'학습자의 반응이 달라지면 학생은 수업을 어떻게 바꿀 것인가',diag:'잘 쓴 지도안만으로 학습자 이해와 수업 중 판단을 확인하기 어려울 때',verbs:['오개념을 진단한다','교수전략을 선택한다','피드백한다','수업을 조정한다'],open:'AI 수업안을 비평하고 개선할 때',sec:'예상 밖의 학생 반응에 즉석에서 대응하게 할 때',tasks:[['교과 수업 설계','지도안 제출을 학생 답안 분석과 오개념별 수업, 피드백 설계로 확장하기'],['교재연구 및 지도법','모의수업에 예상 밖의 학습자 반응 카드를 넣고 설명이나 활동을 조정하게 하기']],grade:'학습자 진단의 근거, 교수전략의 적합성, 피드백의 구체성, 수업 조정의 타당성',kit:'가상 학생 답안, 수업 중 반응 카드, 모의수업 관찰표, 피드백 루브릭'}};
+const ORDER=Object.keys(DOM);
+const EVID=['과정 기록','초안, 수정 이력','구술 응답','현장 관찰','출처 검증표','선택 근거 메모','AI 활용 내역서','감독하 수행 결과'];
+const METH=['감독하 서술형','구술 질의','현장 시연','과정 포트폴리오','조건 변경 문항','모의 수행','동료 평가'];
+const QUIZ=[['원문 근거를 들어 작품을 해석한다','행동','학습목표의 수행동사로 표현된, 학생이 할 일임'],['해석 근거를 표시한 원문 대조표','증거','행동을 했다고 판단할 수 있게 해 주는 산출물임'],['감독하 서술형 시험','방법','증거를 얻기 위한 절차임'],['대안을 비교해 해결안을 선택한다','행동','학생이 수행할 판단 행위임'],['시안 수정 전후 기록과 선택 이유 메모','증거','창작 과정의 선택을 보여 주는 기록임'],['현장 실기 시연 관찰','방법','직접 수행을 확인하는 절차임'],['예상 밖의 학습자 반응에 맞춰 수업을 조정한다','행동','교수 상황에서 학생이 보여야 할 행동임'],['AI 활용 내역서와 출처 검증 기록','증거','AI를 어떻게 쓰고 검증했는지 보여 주는 기록임']];
+const LT={g:'확인 가능',y:'부분 확인',r:'확인 불가'};
+const AIOPT=['명시 없음','금지','제한 허용','허용+공개','필수 활용'];
+const STAGES=[
+{id:'s1',n:1,title:'상황 브리핑',sub:'우리 대학의 평가 현황을 본다',time:['10:10','10:35'],badge:'Scout',sec:'장 도입',
+ story:'본부에서 긴급 브리핑이 도착했습니다. 첫 번째 미니특강 「단국대 강의계획서 분석」을 보면서, 우리 영역에서 평가가 가장 먼저 무너진 지점 세 곳을 찍어 주세요.',
+ mission:'우리 영역의 평가 쟁점 3가지를 학생 역량 관점으로 기록함',req:['i1'],draft:['i1','i2','i3']},
+{id:'s2',n:2,title:'진단 스캔',sub:'내 수업을 진단한다',time:['10:35','11:10'],badge:'Scanner',sec:'1절 기존 평가 진단',
+ story:'이제 교수님 수업에 스캐너를 대 볼 차례입니다. AI가 대신해도 통과되는 평가에는 빨간불이 켜집니다. 팀원 세 과목을 스캔하고 증거 공백을 정리해 주세요.',
+ mission:'강의계획서의 학습목표, 평가방법, AI 사용 조건을 확인하고 신호등으로 판정함',req:['c1.course','gap'],draft:['c1.miss','c2.miss','c3.miss','gap']},
+{id:'s3',n:3,title:'증거 판별 훈련',sub:'좋은 평가의 기준을 배운다',time:['11:10','11:30'],badge:'Evidence Eye',sec:'공통 용어',
+ story:'진짜 증거를 가려내는 눈을 장착할 시간입니다. 두 번째 미니특강 「AX 시대 좋은 평가란?」을 듣고, 여덟 개 아이템을 행동, 증거, 방법으로 판별해 주세요.',
+ mission:'행동, 증거, 평가방법을 구분함',req:[],draft:[]},
+{id:'s4',n:4,title:'카드 조합 실험',sub:'수행동사와 평가방법을 연결한다',time:['11:30','12:10'],badge:'Card Alchemist',sec:'2절 학습목표와 증거 | 3절 개방평가와 보안평가 선택',off:true,
+ story:'테이블 위 카드로 실험할 시간입니다. 같은 동사라도 AI를 허용하는 조합과 독립 수행을 확인하는 조합에서는 보이는 증거가 달라집니다. 오프라인에서 조합해 보고, 베스트 조합을 업로드해 주세요.',
+ mission:'동사 2개에 대해 개방평가 줄, 보안평가 줄 조합과 경매 후보 문장을 입력함',
+ offList:['증거 공백 목록에서 동사 카드 2장을 고름(빈 카드에 영역 고유 동사 추가 가능)','동사마다 개방평가 줄(AI 허용, 공개)과 보안평가 줄(감독하 독립 수행)을 테이블에 배치함','두 줄을 비교해 “AI를 써도 학생이 직접 해야 하는 부분”을 경매 후보 문장으로 씀','결과를 아래에 입력함'],
+ req:['v1.verb','v1.core'],draft:['v1.verb','v1.goal','v1.oAi','v1.oEv','v1.oMe','v1.sEv','v1.sMe','v1.core','v2.verb','v2.goal','v2.oAi','v2.oEv','v2.oMe','v2.sEv','v2.sMe','v2.core']},
+{id:'s5',n:5,title:'가치관 경매',sub:'타협할 수 없는 한 가지를 고른다',time:['13:00','13:40'],badge:'Value Keeper',sec:'평가 원칙(양보 불가 행동)',off:true,
+ story:'다섯 스쿼드가 한자리에 모였습니다. 토큰 열 개로 “이것만큼은 AI에게 절대 양보할 수 없다”는 행동에 베팅해 주세요. 결과를 기록하면 우리 영역의 핵심 원칙이 확정됩니다.',
+ mission:'우리 팀 후보의 득표, 최종 양보 불가 행동 1개, 대표 과제 2개를 입력함',
+ offList:['다섯 팀의 후보를 벽에 공개함','1인 토큰 10개로 비공개 동시 베팅함(자기 팀 후보에는 최대 3개)','최다, 최소 득표 후보의 “걸었던 이유 / 걸지 않은 이유”를 듣고 팀으로 돌아감','최종 1개를 확정하고 결과를 아래에 입력함'],
+ req:['final','task1'],draft:['why','task1','task2']},
+{id:'s6',n:6,title:'평가 리빌드',sub:'실제 평가를 다시 설계한다',time:['13:40','14:35'],badge:'Rebuilder',sec:'4절 대표 평가 재설계 2선',
+ story:'원칙이 정해졌으니 이제 대표 과제를 다시 지을 시간입니다. 네 가지 정렬 체크를 모두 통과하면 ALIGNED 인증 스탬프가 찍힙니다.',
+ mission:'대표 과제 2개의 평가 방식, 학생 할 일, 증거, AI 조건, 핵심 루브릭을 작성하고 정렬을 자가점검함',
+ req:['t1.name','t1.todo','t1.r3'],draft:['t1.before','t1.todo','t1.ev','t1.ai','t1.r3','t1.r2','t1.r1','t2.before','t2.todo','t2.ev','t2.ai','t2.r3','t2.r2','t2.r1']},
+{id:'s7',n:7,title:'최종 보고',sub:'다섯 장을 한 권으로 묶는다',time:['14:35','15:00'],badge:'Author',sec:'장 요약 | 가이드북 편찬',
+ story:'마지막 미션입니다. “무엇을 놓쳤고, 이제 무엇을 볼 수 있는가”를 한 줄씩 남겨 주세요. 다섯 스쿼드가 모두 클리어하면 단국대 평가 시스템이 복구되고 가이드북이 완성됩니다.',
+ mission:'발표 문장 2개를 입력하고 미션을 클리어한 뒤 가이드북 랩에서 우리 장 원고를 확인함',req:['missed','found'],draft:['missed','found']}];
+const RANKS=[[0,'신입 요원'],[300,'현장 요원'],[700,'증거 분석가'],[1200,'평가 설계자'],[1800,'마스터 리부터']];
+/* ---------- state & storage ---------- */
+const st={view:'title',team:null,stage:'s1',me:'',bookSel:'all'};
+try{Object.assign(st,JSON.parse(localStorage.getItem('eq-st')||'{}'))}catch(e){}
+if(st.view!=='title')st.view='title';
+const keepSt=()=>{try{localStorage.setItem('eq-st',JSON.stringify({team:st.team,stage:st.stage,me:st.me}))}catch(e){}};
+const cache={};
+try{Object.assign(cache,JSON.parse(localStorage.getItem('eq-cache')||'{}'))}catch(e){}
+let db=null,sample=null,downloads=null,readonly=false,netMsg='연결 준비 중';
+const did=(t,s)=>t+'-'+s;
+const wsCode=()=>{try{return localStorage.getItem('eq-code')||''}catch(e){return ''}};
+const sd=(t=st.team,s=st.stage)=>cache[did(t,s)]||(cache[did(t,s)]={});
+const getp=(o,p)=>p.split('.').reduce((a,k)=>a==null?undefined:a[k],o);
+const setp=(o,p,v)=>{const ks=p.split('.');let a=o;ks.slice(0,-1).forEach(k=>{if(typeof a[k]!=='object'||a[k]===null)a[k]={};a=a[k]});a[ks[ks.length-1]]=v};
+const timers={},busy={},again={},dirty={};
+function keepLocal(){try{localStorage.setItem('eq-cache',JSON.stringify(cache))}catch(e){}}
+function save(id,delay=900){dirty[id]=1;keepLocal();clearTimeout(timers[id]);timers[id]=setTimeout(()=>flush(id),delay)}
+async function flush(id){
+  if(!db||readonly){dirty[id]=0;return}
+  if(busy[id]){again[id]=1;return}
+  busy[id]=1;
+  try{const {error}=await db.from('ws').upsert({id,data:JSON.parse(JSON.stringify(cache[id]||{})),updated_at:new Date().toISOString()});if(error)throw error;if(!again[id])dirty[id]=0}
+  catch(e){if(e&&(e.code==='42501'||/row-level security/i.test(e.message||''))){toast('워크숍 입장 코드가 맞지 않아 서버에 저장되지 않음. 스쿼드 선택 화면에서 코드를 확인해 주세요')}else{toast('저장이 지연됨. 잠시 후 다시 시도함');setTimeout(()=>flush(id),2500+Math.random()*1500)}}
+  busy[id]=0;
+  if(again[id]){again[id]=0;flush(id)}
+}
+function setNet(m){netMsg=m;const n=$('#net');if(n)n.textContent=m}
+function refreshAfter(cur){
+  if(st.view==='stage'){if(cur){syncFields();if(st.stage==='s3')renderStageBody()}live()}
+  else if(st.view==='book'||st.view==='fac'){if(!genRunning)render()}
+}
+async function subscribe(){
+  const t=setTimeout(()=>setNet('연결 지연, 이 기기에 임시 저장 중'),10000);
+  const {data,error}=await db.from('ws').select('id,data');
+  clearTimeout(t);
+  if(error){setNet('서버 연결 실패, 이 기기에 저장 중');return}
+  (data||[]).forEach(r=>{if(!dirty[r.id])cache[r.id]=r.data||{}});keepLocal();setNet('실시간 동기화 중');refreshAfter(true);
+  db.channel('ws-all').on('postgres_changes',{event:'*',schema:'public',table:'ws'},p=>{
+    const r=(p.new&&p.new.id)?p.new:p.old;if(!r||!r.id)return;const id=r.id;
+    if(dirty[id]||busy[id])return;
+    if(p.eventType==='DELETE')delete cache[id];else cache[id]=p.new.data||{};
+    keepLocal();refreshAfter(!!(st.team&&id===did(st.team,st.stage)));
+  }).subscribe(x=>{if(x==='SUBSCRIBED')setNet('실시간 동기화 중');else if(x==='CHANNEL_ERROR'||x==='TIMED_OUT')setNet('실시간 연결 끊김, 새로고침 필요')});
+}
+
+/* ---------- scoring ---------- */
+function filled(o,skip){let n=0;for(const k in o){if(skip&&['done','ans','chk','at'].includes(k))continue;const v=o[k];if(typeof v==='string'){if(v.trim())n++}else if(v&&typeof v==='object'&&!Array.isArray(v))n+=filled(v,false);else if(Array.isArray(v))v.forEach(x=>{if(x&&typeof x==='object')n+=filled(x,false)})}return n}
+function stats(t){
+  let fields=0,done=0,quiz=0,stamp=0;
+  STAGES.forEach(s=>{const o=cache[did(t,s.id)]||{};if(o.done)done++;fields+=filled(o,true)});
+  const a=(cache[did(t,'s3')]||{}).ans||{};QUIZ.forEach((q,i)=>{if(a['q'+i]===q[1])quiz++});
+  const c=(cache[did(t,'s6')]||{}).chk||{};if(['a','b','c','d'].every(k=>c[k]))stamp=1;
+  const xp=Math.min(fields,60)*10+done*100+quiz*20+stamp*50;
+  let r=0;RANKS.forEach((x,i)=>{if(xp>=x[0])r=i});
+  const lo=RANKS[r][0],hi=RANKS[r+1]?RANKS[r+1][0]:lo+600;
+  return{fields,done,quiz,stamp,xp,rank:RANKS[r][1],next:RANKS[r+1]?RANKS[r+1][1]:'최고 등급',pct:Math.min(100,Math.round((xp-lo)/(hi-lo)*100))};
+}
+const levels=()=>Object.fromEntries(ORDER.map(t=>[t,stats(t).done]));
+
+/* ---------- visuals ---------- */
+const recovery=()=>{let d=0;ORDER.forEach(t=>d+=stats(t).done);return Math.round(d/35*100)};
+const nm=()=>(st.me||'').replace(/\s*교수(님)?$/,'').trim();
+function ringSVG(){
+  const R=58,C=2*Math.PI*R,seg=C/5,gap=6;
+  return `<svg class="ring" viewBox="0 0 150 150" role="img" aria-label="DKU 평가 시스템 복구율 ${recovery()}%">
+${ORDER.map((t,i)=>{const f=stats(t).done/7,len=seg-gap;return `<circle cx="75" cy="75" r="${R}" fill="none" stroke="#ffffffaa" stroke-width="14" stroke-dasharray="${len} ${C-len}" stroke-dashoffset="${-i*seg}" transform="rotate(-90 75 75)"/><circle cx="75" cy="75" r="${R}" fill="none" stroke="${DOM[t].color}" stroke-width="14" stroke-linecap="round" stroke-dasharray="${Math.max(0.01,len*f)} ${C}" stroke-dashoffset="${-i*seg}" transform="rotate(-90 75 75)"/>`}).join('')}
+<text x="75" y="78" text-anchor="middle" font-family="Instrument Serif" font-style="italic" font-size="34" fill="#2c2a63">${recovery()}%</text><text x="75" y="98" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#5f5a83">DKU 복구율</text></svg>`;
+}
+
+/* ---------- views ---------- */
+function titleHTML(){
+  const n=nm();const T='SAVE DKU | REWRITE ASSESSMENT | AX-EL | ';
+  return `<section class="hero">
+<div class="brand"><span><span class="dot"></span><b>AX-EL</b> Co-Define</span><span style="display:flex;align-items:center;gap:22px"><nav class="vnav" aria-label="바로가기"><button class="on" data-act="home">Home</button><button data-act="start">Missions</button><button data-act="book">Guidebook</button><button data-act="fac">HQ</button></nav>
+<button class="toggle ${document.body.classList.contains('still')?'':'on'}" data-act="motion"><span>Motion</span><i></i></button></span></div>
+<div class="hero-c">
+<div class="ticker" aria-hidden="true"><div>${T}<span>${T}</span>${T}<span>${T}</span></div></div>
+<p class="hello">Welcome, AX-EL Professors</p>
+<h1>단국대를 구해주세요!</h1>
+<p class="welcome">AX-EL 펠로우 <b id="wname">${esc(n||'ㅇㅇㅇ')}</b>교수님, 환영합니다!</p><div class="start glass mini"><input id="heroName" value="${esc(st.me)}" placeholder="교수님 성함을 입력해 주세요" aria-label="교수님 성함" autocomplete="name"><button class="btn go" data-act="start">출발!</button></div></div>
+<figure class="art"><img src="hero.webp" width="1600" height="837" alt="망토를 두른 두 히어로가 1위 트로피 양옆에 서 있는 일러스트"></figure>
+<div class="ground">
+
+<p class="story-hero glass">2026년 겨울, 단국대에 비상이 걸렸습니다. AI가 과제를 대신 끝내 주면서 성적표는 멀쩡한데 학생의 진짜 실력은 보이지 않게 되었습니다. 평가를 다시 쓸 수 있는 건 수업을 가장 잘 아는 교수님들뿐. 다섯 스쿼드로 출동해 일곱 개 미션을 클리어하면, 단국대 평가 시스템이 복구되고 <b>AX 평가 가이드북</b>이 완성됩니다.</p></div>
+</section>`;
+}
+function pickHTML(){
+  return `<section class="wrap pick"><button class="ghost s" data-act="home">← 처음으로</button>
+<p class="hello" style="color:var(--vio2);text-shadow:none;margin-top:18px">Choose your squad</p>
+<h2>${esc(nm()||'교수')} 교수님, 출동할 스쿼드를 선택해 주세요</h2><p class="note">같은 스쿼드를 고른 교수님들의 기록은 실시간으로 공유됩니다</p>
+<div class="squads">${ORDER.map(t=>{const d=DOM[t],s=stats(t);return `<button class="sq ${st.team===t?'on':''}" data-act="pickteam" data-t="${t}"><span class="chipc"><i style="background:${d.color}"></i>${t}장</span><span class="code" style="color:${d.color}">${d.code}</span><span class="ar">${esc(d.name)}</span><small>${esc(d.q)}</small><small>미션 ${s.done}/7 | ${s.xp} XP</small></button>`}).join('')}</div>
+<div class="glass" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px 14px;border-radius:20px;margin-bottom:18px;max-width:560px"><label for="wscode" style="font-weight:700">워크숍 입장 코드</label><input id="wscode" type="password" autocomplete="off" value="${esc(wsCode())}" placeholder="진행자가 안내한 코드" style="flex:1 1 180px"><button class="ghost s" data-act="setcode">저장</button></div>
+<button class="btn big" data-act="begin" ${st.team?'':'disabled'}>미션 시작</button></section>`;
+}
+function sideHTML(){
+  if(!st.team)return `<aside class="side"><div class="glass me"><div class="code">HQ</div><small>본부</small></div><div class="sidelinks"><button class="ghost s" data-act="book">가이드북 랩</button><button class="ghost s" data-act="home">처음으로</button></div><span class="net" id="net">${esc(netMsg)}</span></aside>`;
+  const d=DOM[st.team];
+  return `<aside class="side"><div class="glass me"><div class="code" style="color:${d.color}">${d.code}</div><small>${esc(d.name)} 스쿼드${nm()?' | '+esc(nm())+' 교수님':''}</small><div id="xp">${xpInner(stats(st.team))}</div></div>
+<nav class="glass mlist" id="path" aria-label="미션 목록">${pathInner()}</nav>
+<div class="sidelinks"><button class="ghost s" data-act="book">가이드북 랩</button><button class="ghost s" data-act="fac">본부 관제실</button><button class="ghost s" data-act="pick">스쿼드 변경</button></div><span class="net" id="net">${esc(netMsg)}</span></aside>`;
+}
+const xpInner=s=>`<div class="xp-l"><span><b>${esc(s.rank)}</b></span><span>${s.xp} XP</span></div><div class="bar"><i style="width:${s.pct}%"></i></div>`;
+function pathInner(){
+  return STAGES.map(x=>{const o=cache[did(st.team,x.id)]||{};
+  return `<button class="${o.done?'done':''} ${st.stage===x.id&&st.view==='stage'?'cur':''}" data-act="go" data-s="${x.id}"><span class="n">${o.done?'✓':'0'+x.n}</span><span><b>${esc(x.title)}</b><small>${x.time[0]}${x.off?' | 오프라인':''}</small></span></button>`}).join('');
+}
+function recoverHTML(){return `<div class="glass recover" id="recover">${recoverInner()}</div>`}
+const recoverInner=()=>`<span class="pct">${recovery()}%</span><span class="note" style="white-space:nowrap">DKU 평가 시스템 복구율</span><div class="bar"><i style="width:${recovery()}%"></i></div>`;
+function timeInfo(S){
+  const now=new Date(),[a,b]=S.time.map(t=>{const[h,m]=t.split(':');const d=new Date();d.setHours(+h,+m,0,0);return d});
+  if(now>=a&&now<b)return `진행 중 | 남은 시간 <b>${Math.ceil((b-now)/60000)}분</b>`;
+  return `${S.time[0]}–${S.time[1]}`;
+}
+function stageHTML(){
+  const S=STAGES.find(x=>x.id===st.stage),d=DOM[st.team];
+  return `<main class="main">${recoverHTML()}
+<section class="glass brief"><div><div class="mno">Mission 0${S.n}</div>
+<div class="meta"><span class="pill">${esc(S.sub)}</span><span class="pill time">${timeInfo(S)}</span>${S.off?'<span class="pill off">오프라인 활동 → 결과 입력</span>':''}<span class="pill">가이드북 ${d.ch}장 ${esc(S.sec)}</span></div>
+<h2>${esc(S.title)}</h2><p class="story">${esc(S.story)}</p><div class="mission">${esc(S.mission)}</div></div>
+<div class="aibox"><span class="lumi"><svg width="30" height="30" viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="21" fill="#005eb7"/><circle cx="17" cy="22" r="3" fill="#fff"/><circle cx="29" cy="22" r="3" fill="#fff"/></svg>AI 코파일럿 LUMI</span><button class="ghost" data-act="hint">힌트 받기</button>${S.draft.length?'<button class="btn" data-act="draft">초안 받기</button>':''}</div></section>
+${S.off?`<section class="card off-card"><h3>미션 카드</h3><ol>${S.offList.map(x=>`<li>${esc(x)}</li>`).join('')}</ol></section>`:''}
+<div id="sbody">${bodyHTML(S,d)}</div>
+<section class="glass ign" id="ign">${ignInner(S)}</section></main>`;
+}
+function ignInner(S){
+  const o=sd(),miss=missing(S);
+  if(o.done)return `<p>클리어 완료 | 배지 <b>${esc(S.badge)}</b> 획득. 내용은 계속 수정할 수 있습니다.</p>${S.n<7?`<button class="btn" data-act="go" data-s="${STAGES[S.n].id}">다음 미션 →</button>`:'<button class="btn" data-act="book">가이드북 랩으로 →</button>'}`;
+  return `<p>${miss.length?`<span class="need">클리어 조건 | ${esc(miss.join(', '))}</span>`:'클리어 준비 완료!'}</p><button class="btn big" data-act="ignite" ${miss.length?'disabled':''}>미션 클리어</button>`;
+}
+function missing(S){
+  const o=sd(st.team,S.id);
+  if(S.id==='s3'){const a=o.ans||{};const left=QUIZ.filter((q,i)=>!a['q'+i]).length;return left?[`판별 ${left}개 남음`]:[]}
+  return S.req.filter(k=>!String(getp(o,k)||'').trim()).map(k=>labelOf(k));
+}
+function labelOf(k){const el=$(`[data-k="${k}"]`);const l=el&&el.closest('.f');return l?l.querySelector('span').textContent:k}
+const ta=(k,l,ph='',rows=3)=>`<label class="f"><span>${l}</span><textarea data-k="${k}" rows="${rows}" placeholder="${esc(ph)}"></textarea></label>`;
+const tx=(k,l,ph='',type='text')=>`<label class="f"><span>${l}</span><input type="${type}" data-k="${k}" placeholder="${esc(ph)}"></label>`;
+const sel=(k,l,opts)=>`<label class="f"><span>${l}</span><select data-k="${k}"><option value="">선택</option>${opts.map(o=>`<option>${esc(o)}</option>`).join('')}</select></label>`;
+const lights=k=>`<div class="f"><span>신호등 판정 — AI가 대신 수행해도 이 평가로 학생 역량을 확인할 수 있는가</span><div class="seg">${Object.entries(LT).map(([v,l])=>`<label class="lt ${v}"><input type="radio" name="${k}" data-k="${k}" value="${v}"><i></i>${l}</label>`).join('')}</div></div>`;
+function bodyHTML(S,d){
+  const o=sd();
+  if(S.id==='s1')return `<section class="card"><h3>안개 지대 표시</h3><p class="sub">특강 자료에서 우리 영역(${esc(d.name)})의 평가가 학생 역량을 놓치고 있는 지점을 학생 역량 관점으로 적음</p>
+${ta('i1','쟁점 1',`예: ${d.diag}`,2)}${ta('i2','쟁점 2','',2)}${ta('i3','쟁점 3','',2)}</section>`;
+  if(S.id==='s2')return `<div class="grid3">${['c1','c2','c3'].map((c,i)=>`<section class="card"><h3>스캔 대상 ${i+1}</h3><p class="sub">${i===0?'팀원 각자 자기 과목을 하나씩 맡음':'&nbsp;'}</p>
+${tx(c+'.course','과목명','예: 현대소설의 이해')}${tx(c+'.prof','담당 교수')}${ta(c+'.goal','핵심 학습목표','',2)}${ta(c+'.assess','현재 평가방법과 비율','예: 중간 30, 기말 40, 감상문 30',2)}${sel(c+'.ai','AI 사용 조건(강의계획서 기재)',AIOPT)}${lights(c+'.light')}${ta(c+'.miss','AI가 대신하면 보이지 않게 되는 학생 역량','',2)}</section>`).join('')}</div>
+<section class="card" style="margin-top:16px"><h3>팀 요약 | 증거 공백 목록</h3><p class="sub">세 과목을 비교해 현재 평가로 확인하기 어려운 학생 역량을 정리함. 가이드북 1절의 재료가 됨</p>${ta('gap','증거 공백 목록','예: 해석의 근거를 스스로 찾는 과정, 처음 보는 글에 대한 판단',4)}</section>`;
+  if(S.id==='s3'){const a=o.ans||{};const sc=QUIZ.filter((q,i)=>a['q'+i]===q[1]).length;
+    return `<section class="card"><h3>감정대 | 행동인가, 증거인가, 방법인가</h3><p class="sub">정답 1개당 20 XP. 감정 결과는 팀 전체에 공유됨 | 현재 ${sc}/${QUIZ.length}</p><div class="quiz">${QUIZ.map((q,i)=>{const v=a['q'+i];const cls=v?(v===q[1]?'ok':'no'):'';
+    return `<div class="qi ${cls}"><span>${esc(q[0])}</span><div class="ops">${['행동','증거','방법'].map(x=>`<button class="${v===x?'pick':''}" data-act="quiz" data-q="${i}" data-v="${x}">${x}</button>`).join('')}</div>${v?`<div class="fb">${v===q[1]?'정확함':'정답은 '+q[1]}: ${esc(q[2])}</div>`:''}</div>`}).join('')}</div></section>`}
+  if(S.id==='s4')return `<section class="card"><h3>카드 덱</h3><p class="sub">오프라인 탁자의 카드와 같은 구성임</p>
+<div class="chips" style="margin-bottom:8px">${d.verbs.map(v=>`<span class="chip v">${esc(v)}</span>`).join('')}</div>
+<div class="chips" style="margin-bottom:8px">${EVID.map(v=>`<span class="chip e">${esc(v)}</span>`).join('')}</div>
+<div class="chips">${METH.map(v=>`<span class="chip m">${esc(v)}</span>`).join('')}</div></section>
+<datalist id="verbs">${d.verbs.map(v=>`<option value="${esc(v)}">`).join('')}</datalist>
+<div class="grid2" style="margin-top:16px">${['v1','v2'].map((v,i)=>`<section class="card"><h3>조합 ${i+1}</h3>
+<label class="f"><span>수행동사</span><input data-k="${v}.verb" list="verbs" placeholder="예: ${esc(d.verbs[i])}"></label>${ta(v+'.goal','학습목표 문장','',2)}
+<div class="lane o"><h4>개방평가 줄 | AI 활용 허용, 공개</h4>${sel(v+'.oAi','AI 조건',['허용+공개','제한 허용','필수 활용'])}${ta(v+'.oEv','확인할 증거','',2)}${tx(v+'.oMe','평가방법')}</div>
+<div class="lane s"><h4>보안평가 줄 | 감독하 독립 수행</h4>${ta(v+'.sEv','확인할 증거','',2)}${tx(v+'.sMe','평가방법')}</div>
+${ta(v+'.core','경매 후보 문장 — AI를 써도 학생이 직접 해야 하는 부분','',2)}</section>`).join('')}</div>`;
+  if(S.id==='s5'){const c=o.cands||[];
+    return `<div class="grid2"><section class="card"><h3>우리 팀 후보와 득표</h3><p class="sub">경매판에서 받은 토큰 수를 입력함</p>
+${[0,1,2].map(i=>`<div class="cand"><input data-k="cands.${i}.t" placeholder="후보 ${i+1}"><input type="number" min="0" inputmode="numeric" data-k="cands.${i}.tok" placeholder="토큰"></div>`).join('')}
+<button class="ghost s" data-act="prefill-cands">4단계 후보 불러오기</button></section>
+<section class="card"><h3>전체 경매판</h3><p class="sub">다섯 스쿼드의 베팅이 실시간으로 모임</p><div class="bars" id="allbars"></div></section></div>
+<section class="card" style="margin-top:16px"><h3>합의 결과</h3>${ta('final','우리 영역의 양보 불가 행동(한 문장)','예: 학생은 처음 보는 텍스트에서 해석의 근거를 직접 찾아 제시할 수 있어야 함',2)}${ta('why','선정 근거 — 경매 결과와 다르게 정했다면 그 이유','',3)}
+<div class="grid2">${tx('task1','대표 과제 1',d.tasks[0].join(' — '))}${tx('task2','대표 과제 2',d.tasks[1].join(' — '))}</div><button class="ghost s" data-act="prefill-tasks">가이드북 제안 과제로 채우기</button></section>`}
+  if(S.id==='s6'){const s5=cache[did(st.team,'s5')]||{};const fin=s5.final||'양보 불가 행동(5단계에서 입력)';const c=o.chk||{};const all=['a','b','c','d'].every(k=>c[k]);
+    return `<div class="grid2">${['t1','t2'].map((t,i)=>`<section class="card"><h3>설계도 ${i+1}</h3><p class="sub">대표 과제: ${esc(s5['task'+(i+1)]||'5단계에서 입력')}</p>
+${tx(t+'.name','과제명',s5['task'+(i+1)]||'')}${sel(t+'.mode','평가 방식',['개방평가','보안평가','연결형(개방→보안)'])}${ta(t+'.before','개선 전 과제','',2)}${ta(t+'.todo','학생이 할 일','',3)}${ta(t+'.ev','제출하거나 관찰할 증거','',2)}${ta(t+'.ai','AI 사용 조건','',2)}
+<div class="f"><span>루브릭 핵심 항목 | ${esc(fin)}</span></div>
+<div class="rub"><b>우수</b>${ta(t+'.r3','우수 수준 기술','',2).replace('class="f"','class="f" style="margin:0"')}<b>보통</b>${ta(t+'.r2','보통 수준 기술','',2).replace('class="f"','class="f" style="margin:0"')}<b>미흡</b>${ta(t+'.r1','미흡 수준 기술','',2).replace('class="f"','class="f" style="margin:0"')}</div></section>`).join('')}</div>
+<section class="card" style="margin-top:16px"><h3>정렬 자가점검</h3><p class="sub">네 항목을 모두 통과하면 ALIGNED 스탬프(+50 XP)가 찍힘</p>
+${[['a','양보 불가 행동이 루브릭의 최고 수준에 반영되었는가'],['b','증거가 AI만으로는 만들어질 수 없는 형태인가'],['c','AI 사용 조건이 학생이 오해하지 않게 기술되었는가'],['d','루브릭 기술어가 관찰 가능한 행동으로 표현되었는가']].map(([k,l])=>`<label class="chk"><input type="checkbox" data-k="chk.${k}"><span>${l}</span></label>`).join('')}
+<div class="stamp ${all?'':'off'}" id="stamp"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" fill="none" stroke="#f05d2d" stroke-width="6"/><circle cx="50" cy="50" r="34" fill="none" stroke="#f05d2d" stroke-width="2"/><text x="50" y="57" text-anchor="middle" fill="#f05d2d" font-family="Instrument Serif" font-style="italic" font-size="20">Aligned</text></svg><span>${all?'ALIGNED — 설계 정렬 완료':'점검을 마치면 도장이 찍힘'}</span></div></section>`}
+  if(S.id==='s7')return `<section class="card"><h3>발표 문장</h3><p class="sub">팀별 3분 발표의 핵심이며, 장 끝에 “이 장을 쓴 교수들의 한 줄”로 수록됨</p>${ta('missed','기존 평가에서 무엇을 놓쳤는가','',3)}${ta('found','다시 쓴 평가에서는 어떤 학생 역량을 확인할 수 있는가','',3)}</section>
+<section class="card" style="margin-top:16px"><h3>우리 장 미리보기</h3><p class="sub">지금까지의 입력으로 자동 조립된 ${esc(d.ch)}장 원고임. 가이드북 랩에서 AI로 다듬을 수 있음</p><div class="doc" style="max-height:420px;overflow:auto">${md2html(chapterMd(st.team))}</div></section>`;
+  return '';
+}
+function renderStageBody(){const S=STAGES.find(x=>x.id===st.stage);$('#sbody').innerHTML=bodyHTML(S,DOM[st.team]);syncFields();live()}
+function syncFields(){
+  const o=sd();
+  $$('[data-k]').forEach(el=>{if(el===document.activeElement)return;const v=getp(o,el.dataset.k);
+    if(el.type==='checkbox')el.checked=!!v;else if(el.type==='radio')el.checked=el.value===v;else el.value=v??''});
+}
+function live(){
+  if(st.view!=='stage'||!st.team)return;
+  const s=stats(st.team),x=$('#xp');if(x)x.innerHTML=xpInner(s);
+  const p=$('#path');if(p)p.innerHTML=pathInner();
+  const S=STAGES.find(y=>y.id===st.stage),g=$('#ign');if(g)g.innerHTML=ignInner(S);
+  const rc=$('#recover');if(rc)rc.innerHTML=recoverInner();
+  if(st.stage==='s5')bars();
+  if(st.stage==='s6'){const c=sd().chk||{},all=['a','b','c','d'].every(k=>c[k]),sp=$('#stamp');if(sp){sp.classList.toggle('off',!all);sp.lastElementChild.textContent=all?'ALIGNED — 설계 정렬 완료':'점검을 마치면 도장이 찍힘'}}
+}
+function auctionItems(){
+  const it=[];ORDER.forEach(t=>{((cache[did(t,'s5')]||{}).cands||[]).forEach(c=>{if(c&&String(c.t||'').trim())it.push({t,txt:c.t,n:Math.max(0,parseInt(c.tok,10)||0)})})});
+  return it.sort((a,b)=>b.n-a.n);
+}
+function barsHTML(it){
+  if(!it.length)return '<p class="note">아직 입력된 후보가 없음</p>';
+  const mx=Math.max(1,...it.map(x=>x.n));
+  return it.map(x=>`<div class="br"><div class="t"><i style="width:${(x.n/mx*100).toFixed(0)}%"></i><span><em>${esc(x.t)}</em>${esc(x.txt)}</span></div><b>${x.n}</b></div>`).join('');
+}
+function bars(){const b=$('#allbars');if(b)b.innerHTML=barsHTML(auctionItems())}
+
+/* ---------- chapter & book ---------- */
+const cell=s=>String(s==null||s===''?'-':s).replace(/\|/g,'/').replace(/\s*\n+\s*/g,' ');
+const val=s=>(s&&String(s).trim())||'〔미입력〕';
+function chapterMd(t){
+  const d=DOM[t],g=s=>cache[did(t,s)]||{};const s1=g('s1'),s2=g('s2'),s4=g('s4'),s5=g('s5'),s6=g('s6'),s7=g('s7');const L=[];
+  L.push(`## ${d.ch}장. ${d.name} | ${d.q}`,'');
+  if(s5.final)L.push(`> 이 영역의 양보 불가 행동 — ${cell(s5.final)}`,'');
+  L.push(`### 1. 기존 평가 진단 — ${d.diag}`);
+  const iss=[s1.i1,s1.i2,s1.i3].filter(x=>x&&x.trim());
+  if(iss.length){L.push('**강의계획서 분석에서 확인한 평가 쟁점**');iss.forEach(x=>L.push('- '+cell(x)));L.push('')}
+  const cs=['c1','c2','c3'].map(k=>s2[k]||{}).filter(c=>c.course&&c.course.trim());
+  if(cs.length){L.push('| 과목 | 현재 평가방법 | AI 사용 조건 | 판정 | AI가 대신하면 보이지 않는 역량 |','|---|---|---|---|---|');cs.forEach(c=>L.push(`| ${cell(c.course)} | ${cell(c.assess)} | ${cell(c.ai)} | ${LT[c.light]||'-'} | ${cell(c.miss)} |`));L.push('')}
+  L.push(`**증거 공백 요약** — ${cell(val(s2.gap))}`,'');
+  L.push('### 2. 학습목표와 확인할 증거');
+  const vs=['v1','v2'].map(k=>s4[k]||{}).filter(x=>(x.verb||'').trim()||(x.goal||'').trim());
+  if(!vs.length)L.push('〔미입력〕');
+  vs.forEach(x=>{L.push(`- **${cell(val(x.verb))}** — ${cell(val(x.goal))}`,`  - 개방평가에서 확인할 증거: ${cell(val(x.oEv))}`,`  - 보안평가에서 확인할 증거: ${cell(val(x.sEv))}`)});
+  L.push('','### 3. 개방평가와 보안평가 선택',`- 개방평가가 적합한 장면: ${d.open}`,`- 보안평가가 적합한 장면: ${d.sec}`,'');
+  if(vs.length){L.push('| 수행동사 | 개방평가(AI 조건, 방법) | 보안평가(방법) | AI를 써도 학생이 직접 할 부분 |','|---|---|---|---|');vs.forEach(x=>L.push(`| ${cell(x.verb)} | ${cell((x.oAi||'-')+', '+(x.oMe||'-'))} | ${cell(x.sMe)} | ${cell(x.core)} |`));L.push('')}
+  if(s5.why)L.push(`**양보 불가 행동의 선정 근거** — ${cell(s5.why)}`,'');
+  L.push('### 4. 대표 평가 재설계 2선');let any=false;
+  ['t1','t2'].forEach((k,i)=>{const x=s6[k]||{};const nm=x.name||s5['task'+(i+1)];if(!(nm||'').trim()&&!(x.todo||'').trim())return;any=true;
+    L.push(`#### 4-${i+1}. ${cell(val(nm))}${x.mode?` (${x.mode})`:''}`,`- **개선 전 과제**: ${cell(val(x.before))}`,`- **학생이 할 일**: ${cell(val(x.todo))}`,`- **제출, 관찰할 증거**: ${cell(val(x.ev))}`,`- **AI 사용 조건**: ${cell(val(x.ai))}`,'',`| 수준 | ${cell(s5.final||'핵심 항목')} |`,'|---|---|',`| 우수 | ${cell(x.r3)} |`,`| 보통 | ${cell(x.r2)} |`,`| 미흡 | ${cell(x.r1)} |`,'')});
+  if(!any)L.push('〔미입력〕','');
+  L.push('### 5. 채점과 피드백 〔2차 서면자문 보완〕',`- 검토 관점: ${d.grade}`,'','### 6. 바로 쓰는 자료 〔2차 서면자문 보완〕',`- 수록 예정: ${d.kit}`,'');
+  if((s7.missed||'').trim()||(s7.found||'').trim())L.push('### 이 장을 쓴 교수들의 한 줄',`- 기존 평가에서 놓친 것: ${cell(val(s7.missed))}`,`- 다시 쓴 평가에서 확인할 역량: ${cell(val(s7.found))}`,'');
+  return L.join('\n');
+}
+const chMd=t=>{const dr=cache[did(t,'draft')];return dr&&dr.md?dr.md:chapterMd(t)};
+function frontMd(){
+  const day=new Date().toLocaleDateString('ko-KR');
+  return [`# 《AX 시대, 평가를 다시 쓰다》 AX-EL 평가 가이드북 — 워크숍판 초안`,`작성일 ${day} | 다섯 영역 교수진 공동 집필`,'',
+  '> 이 원고는 AX-EL Co-Define 워크숍에서 작성한 영역별 내용을 조립한 초안임. 〔2차 서면자문 보완〕 표시는 서면자문을 거쳐 완성할 부분임.','',
+  '## 들어가며 | 내 수업의 평가부터 점검하기','### 1. 가이드북 사용법 〔2차 서면자문 보완〕','- 과목의 소속과 함께, 평가하려는 학생의 행동을 보고 해당 장을 찾음','',
+  '### 2. 내 강의계획서 진단 〔2차 서면자문 보완〕','- 학습목표, 현재 평가방법, AI 사용 조건을 차례로 점검함','',
+  '### 3. 좋은 평가를 설계하는 순서','- 학생이 할 행동 → 확인할 증거 → 평가방법 → 채점 기준의 순서로 설계함','- 행동은 학습목표의 수행동사로, 증거는 그 행동을 했다고 판단할 수 있는 산출물, 기록, 관찰로, 평가방법은 증거를 얻는 절차로 구분함','',
+  '### 4. 개방평가와 보안평가 선택하기','| 구분 | 정의 | 주로 확인하는 것 |','|---|---|---|','| 개방평가 | AI 활용을 허용, 공개하는 조건에서 과정과 결과를 평가함 | AI를 활용한 수행의 질, 검증, 수정 과정 |','| 보안평가 | 감독하에 학생의 독립 수행을 확인함 | AI 없이 학생이 직접 할 수 있는 핵심 행동 |','| 연결형 | 개방평가 산출물을 보안평가로 확인함 | 산출물과 실제 역량의 일치 |','',
+  '### 5. 공통 운영 기준 〔2차 서면자문 보완〕','- AI 활용 공개와 출처 검증, 접근성, 정보 보호, 오용 의심 시 확인과 소명 절차를 다룸',''].join('\n');
+}
+function backMd(){
+  const L=['## 부록 | 복사해서 쓰는 공통 서식 〔2차 서면자문 보완〕','- 강의계획서 평가 항목 기재 예시 — 개방형, 보안형, 연결형','- 학생용 평가 안내문과 AI 활용 내역서 — 허용 조건, 제출물, 검증, 수정 기록','- 교수자 통합 체크리스트 — 설계 전, 시행 전, 채점 후','- 수행동사–증거–평가방법 색인','- 자주 묻는 질문 — 대형 강의에서 독립 수행 확인하기, 동등한 대체 방식 제공하기, AI 오용 의심에 대응하기','',
+  '### 워크숍 기록 | 영역별 양보 불가 행동','| 영역 | 양보 불가 행동 | 대표 과제 |','|---|---|---|'];
+  ORDER.forEach(t=>{const s=cache[did(t,'s5')]||{};L.push(`| ${t}. ${DOM[t].name} | ${cell(s.final)} | ${cell([s.task1,s.task2].filter(Boolean).join(' / '))} |`)});
+  const it=auctionItems();if(it.length){L.push('','### 워크숍 기록 | 가치관 경매 결과','| 영역 | 후보 | 토큰 |','|---|---|---|');it.forEach(x=>L.push(`| ${x.t} | ${cell(x.txt)} | ${x.n} |`))}
+  return L.join('\n');
+}
+const bookMd=()=>[frontMd(),...ORDER.map(chMd),backMd()].join('\n\n');
+function md2html(md){
+  const out=[];let list=0,tbl=null;
+  const inl=s=>esc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/〔(.+?)〕/g,'<mark>〔$1〕</mark>');
+  const endTbl=()=>{if(tbl){out.push(tbl+'</tbody></table></div>');tbl=null}};
+  const endList=()=>{while(list){out.push('</ul>');list--}};
+  String(md||'').split('\n').forEach(raw=>{const l=raw.replace(/\s+$/,'');let m;
+    if(/^\s*\|/.test(l)){endList();const cs=l.trim().replace(/^\||\|$/g,'').split('|').map(c=>c.trim());if(cs.every(c=>/^:?-{2,}:?$/.test(c)))return;
+      if(!tbl)tbl='<div class="scroll"><table><thead><tr>'+cs.map(c=>'<th>'+inl(c)+'</th>').join('')+'</tr></thead><tbody>';else tbl+='<tr>'+cs.map(c=>'<td>'+inl(c)+'</td>').join('')+'</tr>';return}
+    endTbl();
+    if(m=l.match(/^(#{1,4})\s+(.*)/)){endList();const n=m[1].length+1;out.push(`<h${n}>${inl(m[2])}</h${n}>`);return}
+    if(m=l.match(/^(\s*)[-*]\s+(.*)/)){const lv=m[1].length>=2?2:1;while(list<lv){out.push('<ul>');list++}while(list>lv){out.push('</ul>');list--}out.push('<li>'+inl(m[2])+'</li>');return}
+    if(m=l.match(/^>\s?(.*)/)){endList();out.push('<blockquote>'+inl(m[1])+'</blockquote>');return}
+    if(!l.trim()){endList();return}
+    endList();out.push('<p>'+inl(l)+'</p>')});
+  endTbl();endList();return out.join('');
+}
+function fillBook(){
+  const s=st.bookSel,el=$('#doc');if(!el)return;
+  const md=s==='all'?bookMd():s==='front'?frontMd():s==='back'?backMd():chMd(s);
+  el.innerHTML=md2html(md)+(ORDER.includes(s)?`<p class="note" style="margin-top:24px">${(cache[did(s,'draft')]||{}).md?'AI가 다듬은 원고임. 다시 생성하면 최신 입력이 반영됨.':'워크숍 입력을 그대로 조립한 원고임.'}</p><div class="row aigen"><button class="ghost" style="color:#d9481c;border-color:#d9481c" data-act="gen" data-t="${s}">${s}장 AI 원고 ${(cache[did(s,'draft')]||{}).md?'다시 ':''}생성</button>${(cache[did(s,'draft')]||{}).md?`<button class="ghost" style="color:#d9481c;border-color:#d9481c" data-act="undraft" data-t="${s}">조립본으로 되돌리기</button>`:''}</div>`:'');
+}
+function bookHTML(){
+  const sel=st.bookSel,items=[['all','전체 가이드북','한 권으로 보기'],['front','들어가며','공통 원칙'],...ORDER.map(t=>[t,`${t}장 ${DOM[t].name}`,(cache[did(t,'draft')]||{}).md?'AI 원고 ✓':`조립본 | 미션 ${stats(t).done}/7`]),['back','부록','서식 | 워크숍 기록']];
+  const r=recovery();
+  return `<main class="main"><section class="glass brief"><div><div class="mno">Guidebook Lab</div>
+<h2>${r===100?'단국대 평가 시스템 복구 완료!':'AX 평가 가이드북을 만드는 중'}</h2><p class="story">미션에서 입력한 내용이 장마다 자동으로 조립됩니다. 각 장은 AI 원고로 다듬을 수 있으며, 〔2차 서면자문 보완〕 표시 부분은 서면자문을 거쳐 완성합니다.</p>
+<div class="row" style="display:flex;flex-wrap:wrap;gap:8px"><button class="btn" data-act="dl-md">가이드북 내려받기 (.md)</button><button class="ghost" data-act="dl-html">문서용 내려받기 (.html)</button><button class="ghost" data-act="copy">전체 복사</button></div></div>
+${ringSVG()}</section>
+<div class="book"><nav class="toc">${items.map(([k,a,b])=>`<button class="${sel===k?'on':''}" data-act="bsel" data-k="${k}">${esc(a)}<small>${esc(b)}</small></button>`).join('')}</nav>
+<article class="doc" id="doc"></article></div></main>`;
+}
+function facHTML(){
+  const it=auctionItems();
+  return `<main class="main hq"><section class="glass brief"><div><div class="mno">Headquarters</div><h2>본부 관제실</h2><p class="story">다섯 스쿼드의 미션 진행과 산출물 상태를 실시간으로 확인합니다. 아직 만들지 않은 장의 AI 원고를 한 번에 생성할 수 있습니다.</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px"><button class="btn aigen" data-act="genall">미생성 장 AI 원고 일괄 생성</button><button class="ghost" data-act="book">가이드북 랩</button></div></div>${ringSVG()}</section>
+<section class="card scroll"><table class="stack"><thead><tr><th>스쿼드</th><th>미션</th><th>XP</th><th>양보 불가 행동</th><th>장 원고</th></tr></thead><tbody>
+${ORDER.map(t=>{const s=stats(t),s5=cache[did(t,'s5')]||{},dr=(cache[did(t,'draft')]||{}).md;return `<tr><td><b style="color:${DOM[t].color}">${DOM[t].code}</b><br><small class="note">${t}장 ${esc(DOM[t].name)}</small></td><td><span class="dots">${STAGES.map(x=>`<i class="${(cache[did(t,x.id)]||{}).done?'on':''}" title="${esc(x.title)}"></i>`).join('')}</span></td><td>${s.xp}</td><td>${esc(s5.final||'-')}</td><td>${dr?'AI 원고 ✓':'조립본'}</td></tr>`}).join('')}</tbody></table></section>
+<section class="card"><h3>전체 경매판</h3><div class="bars">${barsHTML(it)}</div></section></main>`;
+}
+function render(){
+  const app=$('#app');
+  if(st.view==='title'){app.innerHTML=titleHTML();return}
+  if(st.view==='pick'){app.innerHTML=pickHTML();return}
+  const inner=st.view==='fac'?facHTML():st.view==='book'?bookHTML():stageHTML();
+  app.innerHTML=`<div class="shell">${sideHTML()}${inner}</div>`;
+  if(st.view==='book')fillBook();
+  if(st.view==='stage'){syncFields();live()}
+}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('on'),2600)}
+function celebrate(S){
+  const fx=$('#fx');
+  fx.innerHTML=`<div class="in"><p class="clear">Mission Clear</p><h2>0${S.n} ${esc(S.title)} 완료!</h2>
+<p>배지 <span class="badge">${esc(S.badge)}</span> | +100 XP<br><span class="note">DKU 평가 시스템 복구율 ${recovery()}%</span></p>
+<button class="btn big" data-act="fxclose">${S.n<7?'다음 미션 →':'가이드북 랩으로 →'}</button></div>`;
+  fx.classList.add('on');fx.dataset.next=S.n<7?STAGES[S.n].id:'book';
+}
+/* ---------- AI ---------- */
+let aiCtl=null,lastDraft=null,genRunning=false;
+function ctx(t){const d=DOM[t];return `[워크숍] AX-EL Co-Define 「AX 시대, 평가를 다시 쓰다」. 단국대 교수 15명이 5개 학문영역 팀(팀당 3명)으로 나뉘어, 영역별 AX 평가 가이드북 장의 1~4절(기존 평가 진단, 학습목표와 확인할 증거, 개방평가와 보안평가 선택, 대표 평가 재설계 2선)을 워크숍에서 작성하고, 5~6절과 공통 부분은 2차 서면자문으로 완성함.
+[용어] 개방평가: AI 활용을 허용, 공개하는 조건에서 과정과 결과를 평가함. 보안평가: 감독하에 학생의 독립 수행을 확인함. 연결형: 개방평가 산출물을 보안평가로 확인함. 평가 설계 순서: 학생이 할 행동 → 확인할 증거 → 평가방법 → 채점 기준.
+[영역] ${d.ch}장 ${d.name} — 핵심 질문: ${d.q}
+- 진단 상황: ${d.diag}
+- 주요 수행동사: ${d.verbs.join(', ')}
+- 개방평가 장면: ${d.open} / 보안평가 장면: ${d.sec}
+- 대표 평가 재설계 2선: ${d.tasks.map(x=>x.join(' — ')).join(' / ')}
+- 채점 관점: ${d.grade}`}
+function teamData(t){const o={};STAGES.forEach(s=>{const v=cache[did(t,s.id)];if(v){const c=JSON.parse(JSON.stringify(v));delete c.done;o[s.n+'단계 '+s.title]=c}});return JSON.stringify(o)}
+function openAI(mode){$('#ai').hidden=false;$('#ai-mode').textContent=mode;$('#ai-out').textContent='항로를 계산하는 중…';$('#ai-f').innerHTML=''}
+async function ask(prompt,onText,tier){
+  if(aiCtl)aiCtl.abort();aiCtl=new AbortController();
+  try{const r=await sample(prompt,{onText:onText?({text})=>onText(text):undefined,signal:aiCtl.signal,modelTier:tier||'default',cache:false});return r}
+  catch(e){if(e&&e.code==='not_granted'){document.body.classList.add('no-ai');toast('AI 도우미를 사용할 수 없음')}else if(e&&e.code==='rate_limited')toast('요청이 많음 — 잠시 후 다시 시도함');else if(e&&e.name!=='AbortError')toast('AI 응답을 받지 못함');throw e}
+}
+async function hint(){
+  const S=STAGES.find(x=>x.id===st.stage);openAI(`${S.n}단계 힌트`);
+  const p=`${ctx(st.team)}\n\n[현재 단계] ${S.n}단계 「${S.title}」 — ${S.mission}\n[팀이 지금까지 입력한 내용(JSON)]\n${teamData(st.team)}\n\n[요청] 이 팀의 교수들이 스스로 더 나은 답을 만들 수 있도록 힌트 3개를 제시함. 정답을 대신 쓰지 말고 생각을 넓히는 질문이나 점검 관점을 제시함. 입력 내용이 있으면 그 내용에 맞춰 구체적으로 짚음. 각 힌트는 1~2문장, 한국어 개조식 문체(~함, ~음). 근거 없는 통계, 문헌은 쓰지 않음. "- "로 시작하는 3줄만 출력함.`;
+  try{const r=await ask(p,t=>{$('#ai-out').textContent=t},'quick');$('#ai-out').textContent=r.text;$('#ai-f').innerHTML='<button class="ghost s" data-act="hint">다른 힌트</button>'}catch(e){if(!(e&&e.name==='AbortError'))$('#ai-out').textContent='힌트를 받지 못함. 잠시 후 다시 시도함.'}
+}
+function flat(o,p='',r={}){for(const k in o){const v=o[k],key=p?p+'.'+k:k;if(v&&typeof v==='object'&&!Array.isArray(v))flat(v,key,r);else r[key]=Array.isArray(v)?v.join(', '):String(v??'')}return r}
+async function draft(){
+  const S=STAGES.find(x=>x.id===st.stage);openAI(`${S.n}단계 초안`);
+  const keys=S.draft.map(k=>`${k} (${labelOf(k)})`);
+  const p=`${ctx(st.team)}\n\n[현재 단계] ${S.n}단계 「${S.title}」 — ${S.mission}\n[팀이 지금까지 입력한 내용(JSON)]\n${teamData(st.team)}\n\n[요청] 아래 키에 들어갈 초안을 작성함. 이미 입력된 내용과 일관되게, ${DOM[st.team].name} 영역 수업에 실제로 적용할 수 있을 만큼 구체적으로 씀. 한국어 개조식 문체(~함), 각 값 1~3문장. 근거 없는 통계, 문헌은 쓰지 않음. 수행동사 키는 주요 수행동사 중에서 고름. AI 조건 키(oAi)는 "허용+공개", "제한 허용", "필수 활용" 중 하나로 씀.\n키 목록:\n${keys.join('\n')}\n\n출력: 위 키(괄호 앞 문자열)를 그대로 쓴 평면 JSON 객체 하나만 출력함. 코드블록이나 설명 없이.`;
+  try{
+    const r=await ask(p,t=>{$('#ai-out').textContent='초안을 쓰는 중…\n\n'+t.slice(-400)});
+    const m=r.text.match(/\{[\s\S]*\}/);if(!m)throw new Error('parse');
+    const obj=flat(JSON.parse(m[0]));lastDraft={};S.draft.forEach(k=>{if(obj[k]&&obj[k].trim())lastDraft[k]=obj[k].trim()});
+    const o=sd(),out=$('#ai-out');out.textContent='';const box=document.createElement('div');box.className='dp';
+    Object.entries(lastDraft).forEach(([k,v])=>{const dv=document.createElement('div'),sm=document.createElement('small');sm.textContent=labelOf(k)+(String(getp(o,k)||'').trim()?' | 이미 입력됨(유지)':'');dv.append(sm,document.createTextNode(v));box.append(dv)});
+    out.append(box);
+    $('#ai-f').innerHTML='<button class="btn" data-act="apply">빈 칸에 채우기</button><button class="ghost s" data-act="draft">다시 생성</button>';
+  }catch(e){if(!(e&&e.name==='AbortError'))$('#ai-out').textContent='초안을 만들지 못함. 다시 생성을 눌러 재시도함.';$('#ai-f').innerHTML='<button class="ghost s" data-act="draft">다시 생성</button>'}
+}
+function applyDraft(){
+  if(!lastDraft)return;const o=sd();let n=0;
+  Object.entries(lastDraft).forEach(([k,v])=>{if(String(getp(o,k)||'').trim())return;const el=$(`[data-k="${k}"]`);
+    if(el&&el.tagName==='SELECT'&&![...el.options].some(op=>op.value===v))return;setp(o,k,v);n++});
+  save(did(st.team,st.stage),200);syncFields();live();toast(`빈 칸 ${n}개를 채움 — 팀 의도에 맞게 고쳐 씀`);
+}
+async function genChapter(t,quiet){
+  if(!sample)return;genRunning=true;
+  if(!quiet){st.view='book';st.bookSel=t;render()}
+  const el=$('#doc'),base=chapterMd(t);
+  if(el&&st.bookSel===t)el.innerHTML='<p class="empty">AI 코파일럿 LUMI가 원고를 다듬는 중…</p>';
+  const p=`${ctx(t)}\n\n[요청] 아래는 워크숍에서 교수 팀이 입력한 내용을 기계적으로 조립한 가이드북 ${t}장 원고임. 다른 교수가 읽고 자기 수업에 바로 적용할 수 있는 가이드북 원고로 다듬음.\n- 장 제목과 1~6절 제목, 순서를 유지함\n- 1~4절: 교수 입력 내용을 빠짐없이 반영하고 문장을 정돈함. 입력에 없는 사실, 수치, 사례, 문헌을 지어내지 않음. 〔미입력〕 부분은 그대로 둠\n- 마크다운 표는 표로 유지함\n- 5~6절: 제목의 〔2차 서면자문 보완〕 표시를 유지하고, 그 아래에 "자문 검토용 초안" 문단으로 채점 관점과 자료 구성을 간략히 제시함\n- "이 장을 쓴 교수들의 한 줄" 절이 있으면 유지함\n- 문체: 한국어 학술 개조식(~함, ~음)\n- 마크다운만 출력함\n\n[조립본]\n${base}`;
+  let last=0;
+  try{
+    const r=await ask(p,txt=>{const now=Date.now();if(now-last<400)return;last=now;const d=$('#doc');if(d&&st.view==='book'&&st.bookSel===t)d.innerHTML=md2html(txt)},'default');
+    let md=r.text.replace(/^```(?:markdown)?\s*|\s*```$/g,'').trim();if(r.truncated)md+='\n\n〔원고가 길어 일부가 잘렸음 — 다시 생성 필요〕';
+    cache[did(t,'draft')]={md,at:new Date().toISOString(),by:st.me||''};save(did(t,'draft'),100);toast(`${t}장 AI 원고를 저장함`);
+  }catch(e){toast(`${t}장 원고 생성 실패`)}
+  genRunning=false;if(st.view==='book'||st.view==='fac')render();
+}
+async function genAll(){for(const t of ORDER){if((cache[did(t,'draft')]||{}).md)continue;toast(`${t}장 원고 생성 중`);await genChapter(t,true)}toast('일괄 생성 완료');}
+async function saveFile(name,text,type){
+  try{const u=URL.createObjectURL(new Blob([text],{type:type+';charset=utf-8'}));const a=document.createElement('a');a.href=u;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);return}catch(e){}
+  try{await navigator.clipboard.writeText(text);toast('내려받기를 쓸 수 없어 클립보드에 복사함')}catch(e){toast('내려받기를 쓸 수 없음')}
+}
+function htmlDoc(){return `<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><title>AX 시대, 평가를 다시 쓰다 — 워크숍판 초안</title><style>body{font-family:'Malgun Gothic','Noto Sans KR',sans-serif;max-width:860px;margin:40px auto;line-height:1.75;color:#1d2422;padding:0 20px}h2{font-size:26px;color:#0f3b47}h3{font-size:20px;color:#0f3b47;border-bottom:2px solid #0f3b47;padding-bottom:4px;margin-top:32px}table{border-collapse:collapse;width:100%;font-size:14px}th,td{border:1px solid #bbb;padding:6px 8px;vertical-align:top;text-align:left}th{background:#eee}blockquote{background:#fff6d6;border-left:4px solid #e0a800;margin:12px 0;padding:8px 12px}mark{background:#ffe1d6}</style></head><body>${md2html(bookMd())}</body></html>`}
+
+/* ---------- events ---------- */
+document.addEventListener('click',async e=>{
+  const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act;
+  if(a==='start'){const h=$('#heroName');if(h){st.me=h.value.trim();keepSt()}st.view='pick';render();scrollTo(0,0)}
+  else if(a==='setcode'){const v=($('#wscode')||{}).value||'';try{localStorage.setItem('eq-code',v.trim())}catch(e){}location.reload()}
+  else if(a==='pick'){st.view='pick';render();scrollTo(0,0)}
+  else if(a==='motion'){document.body.classList.toggle('still');b.classList.toggle('on',!document.body.classList.contains('still'))}
+  else if(a==='home'){st.view='title';render();scrollTo(0,0)}
+  else if(a==='pickteam'){st.team=b.dataset.t;keepSt();render()}
+  else if(a==='begin'){keepSt();const first=STAGES.find(x=>!(cache[did(st.team,x.id)]||{}).done);st.stage=first?first.id:'s7';st.view='stage';render();scrollTo(0,0)}
+  else if(a==='stage'){st.view=st.team?'stage':'pick';render()}
+  else if(a==='go'){st.stage=b.dataset.s;st.view='stage';keepSt();render();scrollTo(0,0)}
+  else if(a==='ignite'){const S=STAGES.find(x=>x.id===st.stage);if(missing(S).length)return;const o=sd();o.done=true;o.at=new Date().toISOString();save(did(st.team,S.id),50);live();celebrate(S)}
+  else if(a==='fxclose'){const fx=$('#fx');fx.classList.remove('on');const n=fx.dataset.next;if(n==='book'){st.view='book';st.bookSel=st.team}else{st.stage=n;keepSt()}render();scrollTo(0,0)}
+  else if(a==='quiz'){const o=sd();o.ans=o.ans||{};o.ans['q'+b.dataset.q]=b.dataset.v;save(did(st.team,'s3'),300);renderStageBody()}
+  else if(a==='prefill-cands'){const o=sd(),s4=cache[did(st.team,'s4')]||{};o.cands=o.cands||[];[s4.v1,s4.v2].forEach((v,i)=>{if(v&&v.core&&!(o.cands[i]&&o.cands[i].t)){o.cands[i]=Object.assign({},o.cands[i],{t:v.core})}});for(let i=0;i<3;i++)if(!o.cands[i])o.cands[i]={};save(did(st.team,'s5'),200);syncFields();live()}
+  else if(a==='prefill-tasks'){const o=sd(),d=DOM[st.team];if(!(o.task1||'').trim())o.task1=d.tasks[0].join(' — ');if(!(o.task2||'').trim())o.task2=d.tasks[1].join(' — ');save(did(st.team,'s5'),200);syncFields();live()}
+  else if(a==='hint'){if(sample)hint()}
+  else if(a==='draft'){if(sample)draft()}
+  else if(a==='apply')applyDraft();
+  else if(a==='closeai'){$('#ai').hidden=true;if(aiCtl)aiCtl.abort()}
+  else if(a==='book'){st.view='book';if(st.bookSel!=='all'&&!ORDER.includes(st.bookSel)&&!['front','back'].includes(st.bookSel))st.bookSel='all';render();scrollTo(0,0)}
+  else if(a==='fac'){st.view='fac';render();scrollTo(0,0)}
+  else if(a==='bsel'){st.bookSel=b.dataset.k;render()}
+  else if(a==='gen'){genChapter(b.dataset.t)}
+  else if(a==='undraft'){const t=b.dataset.t;cache[did(t,'draft')]={md:'',at:new Date().toISOString()};save(did(t,'draft'),100);render()}
+  else if(a==='genall'){genAll()}
+  else if(a==='dl-md')saveFile('AX평가가이드북_워크숍판초안.md',bookMd(),'text/markdown');
+  else if(a==='dl-html')saveFile('AX평가가이드북_워크숍판초안.html',htmlDoc(),'text/html');
+  else if(a==='copy'){try{await navigator.clipboard.writeText(bookMd());toast('가이드북 전체를 복사함')}catch(err){toast('복사하지 못함')}}
+});
+function onField(e){
+  const el=e.target.closest('[data-k]');if(!el||!st.team||st.view!=='stage')return;
+  let v=el.type==='checkbox'?el.checked:el.value;
+  setp(sd(),el.dataset.k,v);save(did(st.team,st.stage));live();
+}
+document.addEventListener('input',e=>{if(e.target.id==='heroName'){st.me=e.target.value;const w=$('#wname'),p=$('#pname'),n=nm()||'ㅇㅇㅇ';if(w)w.textContent=n;if(p)p.textContent=(n.length>7?n.slice(0,7)+'…':n)+' 교수님';return}onField(e)});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='heroName')$('[data-act=start]').click()});
+document.addEventListener('change',e=>{const el=e.target;if(el.type==='radio'||el.type==='checkbox'||el.tagName==='SELECT')onField(e)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if($('#fx').classList.contains('on'))$('#fx [data-act]').click();else $('#ai').hidden=true}});
+setInterval(()=>{if(st.view==='stage'){const S=STAGES.find(x=>x.id===st.stage),p=$('.pill.time');if(p&&S)p.innerHTML=timeInfo(S)}},30000);
+
+render();
+(()=>{
+  const C=window.SAVE_DKU||{};
+  try{const q=new URLSearchParams(location.search).get('code');if(q){localStorage.setItem('eq-code',q);history.replaceState(null,'',location.pathname)}}catch(e){}
+  if(!C.supabaseUrl||!C.supabaseAnonKey||!window.supabase){setNet('이 기기에만 저장됨');document.body.classList.add('no-ai');return}
+  const headers={'x-ws-code':wsCode()};
+  db=window.supabase.createClient(C.supabaseUrl,C.supabaseAnonKey,{global:{headers}});
+  const fn=C.supabaseUrl.replace(/\/$/,'')+'/functions/v1/'+(C.aiFunction||'ai');
+  sample=async(prompt,opts={})=>{
+    let res;
+    try{res=await fetch(fn,{method:'POST',signal:opts.signal,headers:{'Content-Type':'application/json','apikey':C.supabaseAnonKey,'Authorization':'Bearer '+C.supabaseAnonKey,'x-ws-code':wsCode()},body:JSON.stringify({prompt:typeof prompt==='string'?prompt:JSON.stringify(prompt),tier:opts.modelTier||'default'})})}
+    catch(e){if(e&&e.name==='AbortError')throw e;throw {code:'unavailable',message:String(e)}}
+    if(res.status===403)throw {code:'not_granted',message:'코드 불일치'};
+    if(res.status===429)throw {code:'rate_limited',message:'요청 과다'};
+    if(!res.ok||!res.body)throw {code:'unavailable',message:'HTTP '+res.status};
+    const rd=res.body.getReader(),dec=new TextDecoder();let buf='',text='',truncated=false;
+    for(;;){const {value,done}=await rd.read();if(done)break;buf+=dec.decode(value,{stream:true});
+      let i;while((i=buf.indexOf('\n'))>=0){const line=buf.slice(0,i).trim();buf=buf.slice(i+1);
+        if(!line.startsWith('data:'))continue;const d=line.slice(5).trim();if(d==='[DONE]')continue;
+        try{const j=JSON.parse(d),ch=j.choices&&j.choices[0];if(ch){if(ch.delta&&ch.delta.content){text+=ch.delta.content;if(opts.onText)opts.onText({text,delta:ch.delta.content})}if(ch.finish_reason==='length')truncated=true}}catch(e){}}}
+    return {text,truncated};
+  };
+  document.body.classList.remove('no-ai');
+  setNet('동기화 연결 중');subscribe();
+})();
+}
+</script>
+</body>
+</html>
