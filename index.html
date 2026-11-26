@@ -189,6 +189,16 @@ textarea{resize:vertical}input::placeholder,textarea::placeholder{color:#9c97bd}
 body.still .alert,body.still .blink{animation:none}@media(prefers-reduced-motion:reduce){.alert,.blink{animation:none}}
 @media(max-width:560px){.alert-t{display:none}}
 .hero .hello{margin:clamp(8px,2vw,20px) 0 clamp(10px,1.6vw,18px);line-height:1.2}.hero h1{margin:0 0 clamp(14px,2.2vw,24px);line-height:1.12}.hero .welcome{margin:0 0 clamp(20px,3vw,32px);line-height:1.6}.start.mini{margin-top:0!important}
+.rv-nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}.rvn{border:1px solid #cfdff2;background:#fff;border-radius:10px;min-width:44px;min-height:36px;font-size:12px;font-weight:700;padding:4px 6px}
+.rvn.cur{outline:3px solid var(--vio)}.rvn.ok{background:#e4f8f0;border-color:#2fbf8f}.rvn.no{background:#ffe9ec;border-color:#ff5d6c}.rvn.fix{background:#fff4dc;border-color:#ffbf3d}
+.rv-card{background:#fff;border-radius:20px;padding:clamp(16px,2.4vw,24px)}.rv-top{display:flex;justify-content:space-between;align-items:center}
+.rv-verb{font-family:'Freesentation','Noto Sans KR';font-weight:900;font-size:clamp(28px,3.6vw,38px);margin:8px 0 4px}.rv-ex{margin:0 0 12px;font-size:17px;word-break:keep-all}
+.mcs{display:flex;flex-wrap:wrap;gap:8px}.mc{border:1px solid #cfdff2;background:#fff;border-radius:12px;padding:8px 12px;font-size:14px;min-height:40px;text-align:left}.mc b{color:var(--mut);margin-right:4px}
+.mc.on{background:var(--ink);color:#fff;border-color:var(--ink)}.mc.on b{color:#fff}
+.rv-dec{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.dec{border:2px solid #cfdff2;background:#fff;border-radius:14px;min-height:52px;font-size:17px;font-weight:700}
+.dec.ok.on{background:#2fbf8f;border-color:#2fbf8f;color:#fff}.dec.no.on{background:#ff5d6c;border-color:#ff5d6c;color:#fff}.dec.fix.on{background:#ffbf3d;border-color:#ffbf3d;color:#2c2a63}
+.rv-move{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+.rvt{width:100%;border-collapse:collapse;font-size:14px}.rvt th,.rvt td{border-bottom:1px solid #cfdff2;padding:8px;text-align:left;vertical-align:top}.rvt td:nth-child(2),.rvt td:nth-child(3),.rvt td:nth-child(4){text-align:center;font-weight:700}
 </style>
 </head>
 <body>
@@ -232,11 +242,10 @@ const STAGES=[
 {id:'s3',n:3,title:'증거 판별 훈련',sub:'좋은 평가의 기준을 배운다',time:['11:10','11:30'],badge:'Evidence Eye',sec:'공통 용어',
  story:'진짜 증거를 가려내는 눈을 장착할 시간입니다. 두 번째 미니특강 「AX 시대 좋은 평가란?」을 듣고, 여덟 개 아이템을 행동, 증거, 방법으로 판별해 주세요.',
  mission:'행동, 증거, 평가방법을 구분함',req:[],draft:[]},
-{id:'s4',n:4,title:'카드 조합 실험',sub:'수행동사와 평가방법을 연결한다',time:['11:30','12:10'],badge:'Card Alchemist',sec:'2절 학습목표와 증거 | 3절 개방평가와 보안평가 선택',off:true,
- story:'테이블 위 카드로 실험할 시간입니다. 같은 동사라도 AI를 허용하는 조합과 독립 수행을 확인하는 조합에서는 보이는 증거가 달라집니다. 오프라인에서 조합해 보고, 베스트 조합을 업로드해 주세요.',
- mission:'동사 2개에 대해 개방평가 줄, 보안평가 줄 조합과 경매 후보 문장을 입력함',
- offList:['증거 공백 목록에서 동사 카드 2장을 고름(빈 카드에 영역 고유 동사 추가 가능)','동사마다 개방평가 줄(AI 허용, 공개)과 보안평가 줄(감독하 독립 수행)을 테이블에 배치함','두 줄을 비교해 “AI를 써도 학생이 직접 해야 하는 부분”을 경매 후보 문장으로 씀','결과를 아래에 입력함'],
- req:['v1.verb','v1.core'],draft:['v1.verb','v1.goal','v1.oAi','v1.oEv','v1.oMe','v1.sEv','v1.sMe','v1.core','v2.verb','v2.goal','v2.oAi','v2.oEv','v2.oMe','v2.sEv','v2.sMe','v2.core']},
+{id:'s4',n:4,title:'목표 동사 심의',sub:'영역별 학습목표와 평가방법을 심의한다',time:['11:30','12:10'],badge:'Card Alchemist',sec:'2절 학습목표와 확인할 증거 | 3절 개방평가와 보안평가 선택',
+ story:'본부가 목표 동사 60종과 평가방법 카드 24종을 보내왔습니다. 교수님은 공통 동사 10개와 우리 영역 동사 10개, 모두 20개를 하나씩 열어 개방평가와 보안평가 후보를 보고 승인, 거절, 보완을 기록해 주세요. 세 교수님의 판단이 모이면, 스쿼드는 그 결과에서 가치관 경매에 가져갈 원칙 하나를 고릅니다.',
+ mission:'20개 동사를 모두 심의하고, 스쿼드가 함께 경매에 가져갈 원칙 1개를 정함',
+ req:[],draft:[]},
 {id:'s5',n:5,title:'가치관 경매',sub:'타협할 수 없는 한 가지를 고른다',time:['13:00','13:40'],badge:'Value Keeper',sec:'평가 원칙(양보 불가 행동)',off:true,
  story:'다섯 스쿼드가 한자리에 모였습니다. 토큰 열 개로 “이것만큼은 AI에게 절대 양보할 수 없다”는 행동에 베팅해 주세요. 결과를 기록하면 우리 영역의 핵심 원칙이 확정됩니다.',
  mission:'우리 팀 후보의 득표, 최종 양보 불가 행동 1개, 대표 과제 2개를 입력함',
@@ -381,6 +390,7 @@ function ignInner(S){
 }
 function missing(S){
   const o=sd(st.team,S.id);
+  if(S.id==='s4')return rvMissing();
   if(S.id==='s3'){const a=o.ans||{};const left=QUIZ.filter((q,i)=>!a['q'+i]).length;return left?[`판별 ${left}개 남음`]:[]}
   return S.req.filter(k=>!String(getp(o,k)||'').trim()).map(k=>labelOf(k));
 }
@@ -389,6 +399,116 @@ const ta=(k,l,ph='',rows=3)=>`<label class="f"><span>${l}</span><textarea data-k
 const tx=(k,l,ph='',type='text')=>`<label class="f"><span>${l}</span><input type="${type}" data-k="${k}" placeholder="${esc(ph)}"></label>`;
 const sel=(k,l,opts)=>`<label class="f"><span>${l}</span><select data-k="${k}"><option value="">선택</option>${opts.map(o=>`<option>${esc(o)}</option>`).join('')}</select></label>`;
 const lights=k=>`<div class="f"><span>신호등 판정 — AI가 대신 수행해도 이 평가로 학생 역량을 확인할 수 있는가</span><div class="seg">${Object.entries(LT).map(([v,l])=>`<label class="lt ${v}"><input type="radio" name="${k}" data-k="${k}" value="${v}"><i></i>${l}</label>`).join('')}</div></div>`;
+/* ---------- 미션 4: 목표 동사 심의 ---------- */
+const METHODS={'01':'선다형/연결형 문항','02':'단답형 문항','03':'자료 기반 서술형','04':'원문 대조 과제','05':'출처와 주장 검증 과제','06':'비교와 선택 과제','07':'사례 분석 과제','08':'새 사례 즉석 수행','09':'조건 변경 문항','10':'오류 진단과 수정 과제','11':'데이터 분석 실습','12':'재현 실습','13':'설계와 제작 프로젝트','14':'과정 포트폴리오 평가','15':'초안과 수정본 비교 평가','16':'구술 질의','17':'발표와 디펜스','18':'구조화 토론','19':'현장 시연과 직접 관찰','20':'역할극과 시뮬레이션','21':'모의수업과 마이크로티칭','22':'동료 비평','23':'기준 적용 채점 실습','24':'개인 기여 확인 면담'};
+const V=(id,n,ex,o,s)=>({id,n,ex,o:o.split(','),s:s.split(',')});
+const VERBS={
+COM:[V('COM-01','식별한다','자료나 사례에서 핵심 개념, 오류, 단서를 찾아 근거와 함께 표시한다.','04,05,07,10','01,02,08,19'),
+V('COM-02','분류한다','기준을 세워 대상을 범주로 나누고 분류 기준의 타당성을 설명한다.','06,07,11,14','01,03,08,16'),
+V('COM-03','설명한다','개념이나 현상의 원리를 자기 말로 풀어 쓰고 예를 들어 보인다.','07,11,14,17','02,03,08,16'),
+V('COM-04','비교한다','둘 이상의 대상을 같은 기준으로 견주어 공통점과 차이를 정리한다.','04,06,07,22','03,08,09,16'),
+V('COM-05','해석한다','자료나 결과가 의미하는 바를 맥락 속에서 읽어 내고 근거를 댄다.','04,07,11,17','03,08,09,16'),
+V('COM-06','적용한다','배운 원리나 절차를 새로운 상황에 맞게 사용해 결과를 낸다.','07,11,13,14','08,09,19,20'),
+V('COM-07','분석한다','대상을 구성 요소로 나누고 요소 간 관계와 원인을 밝힌다.','07,10,11,14','03,08,09,16'),
+V('COM-08','검증한다','주장, 자료, AI 산출물의 정확성을 원자료와 기준에 비추어 확인한다.','04,05,11,12','03,08,10,12'),
+V('COM-09','판단을 정당화한다','자신의 선택이나 결론을 근거와 기준으로 뒷받침하고 한계를 밝힌다.','06,07,17,18','03,09,16,20'),
+V('COM-10','수정한다','피드백이나 새 정보를 반영해 결과물을 고치고 수정 이유를 설명한다.','10,14,15,22','08,09,10,19')],
+A:[V('A-01','요약한다','텍스트의 핵심 주장과 근거를 원문 구조에 맞게 간추린다.','04,14,15','02,03,08'),
+V('A-02','재진술한다','원문의 의미를 왜곡하지 않고 자기 말로 다시 표현한다.','04,15,22','02,03,16'),
+V('A-03','맥락화한다','텍스트를 시대, 저자, 담론의 맥락 속에 놓고 의미를 설명한다.','04,05,07,17','03,08,16'),
+V('A-04','추론한다','텍스트에 드러나지 않은 전제와 함의를 근거에 기대어 이끌어 낸다.','04,07,17','03,08,16'),
+V('A-05','대조한다','서로 다른 텍스트나 번역본의 관점과 표현을 나란히 놓고 차이를 밝힌다.','04,05,15','03,08,10'),
+V('A-06','논증한다','주장, 근거, 반박 가능성을 갖춘 글이나 말로 입장을 세운다.','04,14,17,18','03,08,16,18'),
+V('A-07','반론을 구성한다','상대 주장의 약점을 찾아 근거 있는 반론을 세운다.','05,17,18,22','03,08,16,18'),
+V('A-08','반론에 응답한다','새로운 반론을 검토하고, 원문 근거를 들어 주장을 유지하거나 수정한 이유를 설명한다.','15,17,18,22','09,16,18'),
+V('A-09','종합한다','여러 텍스트의 관점을 엮어 하나의 일관된 해석이나 입장으로 정리한다.','04,05,14,17','03,08,16'),
+V('A-10','비평한다','텍스트의 논리, 표현, 가치를 기준에 따라 평가하고 근거를 제시한다.','04,05,17,22','03,08,16')],
+B:[V('B-01','문제를 정의한다','모호한 상황에서 해결할 문제와 성공 기준을 명확히 진술한다.','07,13,14','03,08,16'),
+V('B-02','제약을 도출한다','비용, 시간, 안전, 규정 등 해결안이 지켜야 할 조건을 찾아 정리한다.','06,07,13','08,09,16'),
+V('B-03','모델링한다','현상이나 시스템을 수식, 도식, 시뮬레이션으로 단순화해 표현한다.','11,13,17','03,08,16'),
+V('B-04','계산한다','적절한 방법을 골라 정확하게 계산하고 결과의 타당성을 점검한다.','10,11,12','02,08,09'),
+V('B-05','대안을 생성한다','하나의 문제에 대해 서로 다른 접근의 해결안을 여러 개 만든다.','06,07,13,14','08,09,16'),
+V('B-06','해결안을 선택한다','대안을 같은 기준으로 비교해 하나를 고르고 선택 이유를 밝힌다.','06,13,17','03,09,16'),
+V('B-07','최적화한다','성능, 비용 등 목표 지표를 개선하도록 설계 변수를 조정한다.','11,12,13,15','08,09,16'),
+V('B-08','구현한다','설계안을 실제 작동하는 결과물로 만들어 동작을 확인한다.','12,13,14','08,10,19'),
+V('B-09','결함을 진단한다','작동하지 않는 원인을 체계적으로 좁혀 찾아내고 근거를 제시한다.','07,10,12','08,10,19'),
+V('B-10','재설계한다','조건이 바뀌었을 때 기존 해결안을 고쳐 다시 설계하고 변경 근거를 설명한다.','13,14,15,17','09,16,19')],
+C:[V('C-01','연구문제를 설정한다','선행연구의 공백에서 탐구할 수 있는 연구문제를 구체적으로 진술한다.','05,07,14,17','03,08,16'),
+V('C-02','가설을 수립한다','이론과 선행 근거에 기대어 검증 가능한 가설을 세운다.','07,11,13,17','03,08,16'),
+V('C-03','조작적으로 정의한다','추상적 개념을 측정 가능한 변수와 지표로 바꾸어 정의한다.','07,11,13','03,08,16'),
+V('C-04','연구를 설계한다','연구문제에 맞는 대상, 절차, 분석 방법을 갖춘 설계안을 만든다.','07,13,14,17','03,08,09,16'),
+V('C-05','측정한다','정해진 절차와 도구로 정확하게 측정하고 오차를 기록한다.','11,12,14','08,12,19'),
+V('C-06','근거를 평가한다','연구나 임상 근거의 질과 적용 가능성을 기준에 따라 판단한다.','05,06,11,17','03,08,16'),
+V('C-07','결과를 재현한다','공개된 자료와 절차로 결과를 다시 얻고 차이가 나면 원인을 설명한다.','11,12,14','10,12,19'),
+V('C-08','감별한다','비슷한 증상이나 현상 가운데 가능성을 좁혀 가장 타당한 것을 가려낸다.','06,07,17','08,09,16,20'),
+V('C-09','우선순위를 정한다','여러 문제나 처치 가운데 긴급도와 근거에 따라 순서를 정한다.','06,07,17','08,09,16,20'),
+V('C-10','불확실성을 설명한다','결론의 한계와 불확실한 부분을 밝히고 그것이 판단에 주는 영향을 설명한다.','05,07,11,17','03,09,16,20')],
+D:[V('D-01','발상한다','주제에 대해 여러 갈래의 아이디어를 내고 발전시킬 것을 고른다.','13,14,22','08,09,19'),
+V('D-02','구상한다','작품의 의도, 구조, 표현 방식을 계획으로 구체화한다.','13,14,17','08,16,19'),
+V('D-03','구성한다','요소를 배치하고 조합해 의도가 드러나는 형식으로 만든다.','13,14,15','08,09,19'),
+V('D-04','변주한다','주어진 소재나 형식을 바꾸어 새로운 표현을 만든다.','13,14,15','08,09,19'),
+V('D-05','제작한다','재료와 도구를 다루어 계획한 작품을 완성한다.','13,14,17','08,19'),
+V('D-06','기법을 시연한다','핵심 기법을 직접 수행해 보이고 정확성을 확인받는다.','13,14,17','08,19'),
+V('D-07','즉흥 대응한다','예상하지 못한 조건이나 신호에 맞추어 즉석에서 표현을 조정한다.','14,17,20','09,19,20'),
+V('D-08','작품을 비평한다','자신과 타인의 작품을 기준에 따라 평가하고 근거를 들어 말한다.','06,17,22','03,08,16'),
+V('D-09','수정 선택을 설명한다','작품을 고친 지점과 그렇게 고른 이유를 과정 기록과 함께 설명한다.','14,15,17,22','09,16,19'),
+V('D-10','협업한다','공동 작업에서 맡은 역할을 수행하고 자신의 기여를 증거로 보인다.','13,14,22,24','19,20,24')],
+E:[V('E-01','오개념을 진단한다','학생 답안이나 반응에서 오개념을 찾아 그 원인을 설명한다.','07,10,23','03,08,16,20'),
+V('E-02','학습목표를 진술한다','학습자가 보일 행동과 조건, 기준이 드러나게 학습목표를 쓴다.','10,13,15,22','03,08,16'),
+V('E-03','목표와 평가를 정렬한다','학습목표에 맞는 평가 과제와 채점 기준을 설계한다.','07,13,15,23','03,08,16'),
+V('E-04','교수전략을 선택한다','학습자 특성과 목표에 맞는 교수전략을 고르고 근거를 밝힌다.','06,07,17','08,09,16'),
+V('E-05','발문한다','학습자의 사고를 이끄는 질문을 수업 흐름에 맞게 던진다.','14,20,21','08,16,21'),
+V('E-06','시범을 보인다','학습할 절차나 기능을 학습자 앞에서 정확하게 보여 준다.','14,17,21','19,21'),
+V('E-07','참여를 촉진한다','다양한 학습자가 수업에 참여하도록 활동과 상호작용을 조정한다.','14,20,21','09,20,21'),
+V('E-08','피드백한다','학습자의 결과물에 대해 구체적이고 실행 가능한 피드백을 준다.','07,15,22,23','08,16,20,21'),
+V('E-09','수업을 조정한다','예상 밖의 학습자 반응에 맞추어 설명이나 활동을 즉석에서 바꾼다.','14,15,20,21','09,20,21'),
+V('E-10','채점 기준을 적용한다','루브릭을 학생 답안에 일관되게 적용하고 판단 근거를 기록한다.','06,22,23','08,16,23')]};
+const RV_TARGETS=['목표 문장','개방평가','보안평가','적용 조건'];
+const RV_D={ok:'승인',no:'거절',fix:'보완'};
+const myPid=()=>{try{let p=localStorage.getItem('eq-pid');if(!p){p=Math.random().toString(36).slice(2,8);localStorage.setItem('eq-pid',p)}return p}catch(e){return 'anon'}};
+const verbList=t=>[...VERBS.COM,...(VERBS[t]||[])];
+const verbById=id=>Object.values(VERBS).flat().find(v=>v.id===id);
+const rvId=(t,p)=>t+'-rev-'+p;
+const myRv=()=>{const id=rvId(st.team,myPid());const o=cache[id]||(cache[id]={items:{}});if(!o.items)o.items={};o.name=nm()||'';o.pid=myPid();return o};
+const teamRvs=t=>Object.keys(cache).filter(k=>k.startsWith(t+'-rev-')).map(k=>cache[k]).filter(o=>o&&o.items);
+const rvDone=o=>Object.values(o.items||{}).filter(x=>x&&x.d).length;
+let rvIdx=0;
+function mlist(ids){return ids.map(i=>METHODS[i]?`${i} ${METHODS[i]}`:i)}
+function rvCardHTML(){
+  const L=verbList(st.team),v=L[rvIdx],me=myRv(),it=me.items[v.id]||{};
+  const chips=(ids,side)=>ids.map(i=>{const on=(it.pick||[]).includes(i);return `<button class="mc ${side} ${on?'on':''}" data-act="rv-pick" data-m="${i}" aria-pressed="${on}"><b>${i}</b> ${esc(METHODS[i]||'')}</button>`}).join('');
+  return `<div class="rv-nav">${L.map((x,i)=>{const d=(me.items[x.id]||{}).d;return `<button class="rvn ${i===rvIdx?'cur':''} ${d||''}" data-act="rv-go" data-i="${i}" title="${esc(x.n)}">${esc(x.id.replace('COM-','C'))}</button>`}).join('')}</div>
+<article class="rv-card"><div class="rv-top"><span class="pill">${v.id.startsWith('COM')?'공통':'영역'} ${rvIdx+1}/20</span><span class="note">${esc(v.id)}</span></div>
+<h3 class="rv-verb">${esc(v.n)}</h3><p class="rv-ex">${esc(v.ex)}</p>
+<div class="lane o"><h4>개방평가 후보 <span class="note">AI 활용을 허용하고 공개하는 조건</span></h4><div class="mcs">${chips(v.o,'o')}</div></div>
+<div class="lane s"><h4>보안평가 후보 <span class="note">감독하에 독립 수행을 확인하는 조건</span></h4><div class="mcs">${chips(v.s,'s')}</div></div>
+<p class="note">방법 카드를 누르면 '선택한 방법'으로 기록됨(선택 입력)</p>
+<div class="rv-dec">${Object.entries(RV_D).map(([k,l])=>`<button class="dec ${k} ${it.d===k?'on':''}" data-act="rv-d" data-d="${k}">${l}</button>`).join('')}</div>
+${it.d==='fix'?`<div class="grid2" style="gap:10px;margin-top:12px"><label class="f"><span>보완 대상</span><select data-rv="target"><option value="">선택</option>${RV_TARGETS.map(x=>`<option ${it.target===x?'selected':''}>${x}</option>`).join('')}</select></label><label class="f"><span>보완 내용(한 줄)</span><input data-rv="fix" value="${esc(it.fix||'')}" placeholder="무엇을 어떻게 바꿀지"></label></div>`:''}
+<label class="f" style="margin-top:10px"><span>의견(선택)</span><input data-rv="note" value="${esc(it.note||'')}" placeholder="판단 이유를 한 줄로"></label>
+<div class="rv-move"><button class="ghost s" data-act="rv-go" data-i="${Math.max(0,rvIdx-1)}" ${rvIdx===0?'disabled':''}>← 이전</button><span class="note">내 심의 <b>${rvDone(me)}/20</b></span><button class="btn" data-act="rv-go" data-i="${Math.min(19,rvIdx+1)}" ${rvIdx===19?'disabled':''}>다음 →</button></div></article>`;
+}
+function rvSummary(t){
+  const rs=teamRvs(t),L=verbList(t),done=rs.reduce((a,o)=>a+Math.min(20,rvDone(o)),0);
+  const rows=L.map(v=>{const its=rs.map(o=>({n:o.name||'교수',...(o.items[v.id]||{})})).filter(x=>x.d);const c={ok:0,no:0,fix:0};its.forEach(x=>c[x.d]++);
+    const notes=its.filter(x=>x.fix||x.note).map(x=>`${x.n}: ${x.d==='fix'?'['+(x.target||'보완')+'] '+(x.fix||''):''}${x.note?' '+x.note:''}`);
+    return {v,c,notes}});
+  return {rs,done,rows};
+}
+function rvSumHTML(){
+  const {rs,done,rows}=rvSummary(st.team);
+  return `<div class="row" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px"><span class="pill">스쿼드 심의 ${done}/60</span><span class="pill">참여 교수 ${rs.length}명</span>${rs.map(o=>`<span class="pill">${esc(o.name||'교수')} ${rvDone(o)}/20</span>`).join('')}</div>
+<div class="scroll"><table class="rvt"><thead><tr><th>동사</th><th>승인</th><th>거절</th><th>보완</th><th>보완과 의견</th></tr></thead><tbody>${rows.map(r=>`<tr><td><b>${esc(r.v.n)}</b><br><small class="note">${r.v.id}</small></td><td>${r.c.ok}</td><td>${r.c.no}</td><td>${r.c.fix}</td><td>${r.notes.map(esc).join('<br>')||'<span class="note">-</span>'}</td></tr>`).join('')}</tbody></table></div>`;
+}
+function rvMissing(){const me=myRv(),miss=[];if(rvDone(me)<20)miss.push(`내 심의 ${rvDone(me)}/20`);const o=sd(st.team,'s4');if(!o.pv)miss.push('원칙 동사');if(!String((o.v1||{}).core||'').trim())miss.push('경매 원칙 문장');return miss}
+function rvSave(){save(rvId(st.team,myPid()),600)}
+function rvChapterMd(t){
+  const {rows}=rvSummary(t);if(!rows.some(r=>r.c.ok+r.c.no+r.c.fix))return '〔심의 결과 미입력〕';
+  const L=['| 동사 | 학습목표 예시 | 개방평가 후보 | 보안평가 후보 | 심의(승인/거절/보완) | 보완과 의견 |','|---|---|---|---|---|---|'];
+  rows.forEach(r=>L.push(`| ${r.v.id} ${r.v.n} | ${cell(r.v.ex)} | ${cell(r.v.o.map(i=>METHODS[i]).join(', '))} | ${cell(r.v.s.map(i=>METHODS[i]).join(', '))} | ${r.c.ok}/${r.c.no}/${r.c.fix} | ${cell(r.notes.join(' / ')||'-')} |`));
+  return L.join('\n');
+}
+
 function bodyHTML(S,d){
   const o=sd();
   if(S.id==='s1')return `<section class="card"><h3>안개 지대 표시</h3><p class="sub">특강 자료에서 우리 영역(${esc(d.name)})의 평가가 학생 역량을 놓치고 있는 지점을 학생 역량 관점으로 적음</p>
@@ -399,16 +519,11 @@ ${tx(c+'.course','과목명','예: 현대소설의 이해')}${tx(c+'.prof','담�
   if(S.id==='s3'){const a=o.ans||{};const sc=QUIZ.filter((q,i)=>a['q'+i]===q[1]).length;
     return `<section class="card"><h3>감정대 | 행동인가, 증거인가, 방법인가</h3><p class="sub">정답 1개당 20 XP. 감정 결과는 팀 전체에 공유됨 | 현재 ${sc}/${QUIZ.length}</p><div class="quiz">${QUIZ.map((q,i)=>{const v=a['q'+i];const cls=v?(v===q[1]?'ok':'no'):'';
     return `<div class="qi ${cls}"><span>${esc(q[0])}</span><div class="ops">${['행동','증거','방법'].map(x=>`<button class="${v===x?'pick':''}" data-act="quiz" data-q="${i}" data-v="${x}">${x}</button>`).join('')}</div>${v?`<div class="fb">${v===q[1]?'정확함':'정답은 '+q[1]}: ${esc(q[2])}</div>`:''}</div>`}).join('')}</div></section>`}
-  if(S.id==='s4')return `<section class="card"><h3>카드 덱</h3><p class="sub">오프라인 탁자의 카드와 같은 구성임</p>
-<div class="chips" style="margin-bottom:8px">${d.verbs.map(v=>`<span class="chip v">${esc(v)}</span>`).join('')}</div>
-<div class="chips" style="margin-bottom:8px">${EVID.map(v=>`<span class="chip e">${esc(v)}</span>`).join('')}</div>
-<div class="chips">${METH.map(v=>`<span class="chip m">${esc(v)}</span>`).join('')}</div></section>
-<datalist id="verbs">${d.verbs.map(v=>`<option value="${esc(v)}">`).join('')}</datalist>
-<div class="grid2" style="margin-top:16px">${['v1','v2'].map((v,i)=>`<section class="card"><h3>조합 ${i+1}</h3>
-<label class="f"><span>수행동사</span><input data-k="${v}.verb" list="verbs" placeholder="예: ${esc(d.verbs[i])}"></label>${ta(v+'.goal','학습목표 문장','',2)}
-<div class="lane o"><h4>개방평가 줄 | AI 활용 허용, 공개</h4>${sel(v+'.oAi','AI 조건',['허용+공개','제한 허용','필수 활용'])}${ta(v+'.oEv','확인할 증거','',2)}${tx(v+'.oMe','평가방법')}</div>
-<div class="lane s"><h4>보안평가 줄 | 감독하 독립 수행</h4>${ta(v+'.sEv','확인할 증거','',2)}${tx(v+'.sMe','평가방법')}</div>
-${ta(v+'.core','경매 후보 문장 — AI를 써도 학생이 직접 해야 하는 부분','',2)}</section>`).join('')}</div>`;
+  if(S.id==='s4'){const L=verbList(st.team);return `<section class="card"><h3>내 심의</h3><p class="sub">공통 10개, 영역 10개 순서로 표시됨. 판단은 교수님별로 저장되고 스쿼드 표에 자동으로 모임</p><div id="rv-card">${rvCardHTML()}</div></section>
+<section class="card" style="margin-top:16px"><h3>스쿼드 심의 결과</h3><p class="sub">세 교수님의 판단과 보완 의견이 동사별로 실시간 정리됨</p><div id="rv-sum">${rvSumHTML()}</div></section>
+<section class="card" style="margin-top:16px"><h3>경매에 가져갈 원칙</h3><p class="sub">심의 결과를 보고 스쿼드가 함께 정함. 이 원칙이 5단계 가치관 경매의 우리 팀 후보가 됨</p>
+<label class="f"><span>원칙의 바탕이 되는 동사</span><select data-k="pv"><option value="">선택</option>${L.map(v=>`<option value="${v.id}">${esc(v.id+' '+v.n)}</option>`).join('')}</select></label>
+${ta('v1.core','경매 원칙 문장 — AI를 써도 학생이 직접 해야 하는 행동','예: 학생은 새로운 반론 앞에서 원문 근거를 들어 자기 주장을 지키거나 고칠 수 있어야 함',2)}</section>`}
   if(S.id==='s5'){const c=o.cands||[];
     return `<div class="grid2"><section class="card"><h3>우리 팀 후보와 득표</h3><p class="sub">경매판에서 받은 토큰 수를 입력함</p>
 ${[0,1,2].map(i=>`<div class="cand"><input data-k="cands.${i}.t" placeholder="후보 ${i+1}"><input type="number" min="0" inputmode="numeric" data-k="cands.${i}.tok" placeholder="토큰"></div>`).join('')}
@@ -440,6 +555,7 @@ function live(){
   const p=$('#path');if(p)p.innerHTML=pathInner();
   const S=STAGES.find(y=>y.id===st.stage),g=$('#ign');if(g)g.innerHTML=ignInner(S);
   const rc=$('#recover');if(rc)rc.innerHTML=recoverInner();
+  if(st.stage==='s4'){const r=$('#rv-sum');if(r)r.innerHTML=rvSumHTML()}
   if(st.stage==='s5')bars();
   if(st.stage==='s6'){const c=sd().chk||{},all=['a','b','c','d'].every(k=>c[k]),sp=$('#stamp');if(sp){sp.classList.toggle('off',!all);sp.lastElementChild.textContent=all?'ALIGNED — 설계 정렬 완료':'점검을 마치면 도장이 찍힘'}}
 }
@@ -467,7 +583,7 @@ function chapterMd(t){
   const cs=['c1','c2','c3'].map(k=>s2[k]||{}).filter(c=>c.course&&c.course.trim());
   if(cs.length){L.push('| 과목 | 현재 평가방법 | AI 사용 조건 | 판정 | AI가 대신하면 보이지 않는 역량 |','|---|---|---|---|---|');cs.forEach(c=>L.push(`| ${cell(c.course)} | ${cell(c.assess)} | ${cell(c.ai)} | ${LT[c.light]||'-'} | ${cell(c.miss)} |`));L.push('')}
   L.push(`**증거 공백 요약** — ${cell(val(s2.gap))}`,'');
-  L.push('### 2. 학습목표와 확인할 증거');
+  L.push('### 2. 학습목표와 확인할 증거','**목표 동사 심의 결과**(공통 10종, 영역 10종)',rvChapterMd(t),'');
   const vs=['v1','v2'].map(k=>s4[k]||{}).filter(x=>(x.verb||'').trim()||(x.goal||'').trim());
   if(!vs.length)L.push('〔미입력〕');
   vs.forEach(x=>{L.push(`- **${cell(val(x.verb))}** — ${cell(val(x.goal))}`,`  - 개방평가에서 확인할 증거: ${cell(val(x.oEv))}`,`  - 보안평가에서 확인할 증거: ${cell(val(x.sEv))}`)});
@@ -627,6 +743,10 @@ document.addEventListener('click',async e=>{
   const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act;
   if(a==='start'){const h=$('#heroName');if(h){st.me=h.value.trim();keepSt()}st.view='pick';render();scrollTo(0,0)}
   else if(a==='setcode'){const v=($('#wscode')||{}).value||'';try{localStorage.setItem('eq-code',v.trim())}catch(e){}location.reload()}
+  else if(a==='rv-go'){rvIdx=+b.dataset.i;$('#rv-card').innerHTML=rvCardHTML();$('#rv-card').scrollIntoView({block:'nearest'})}
+  else if(a==='rv-d'){const v=verbList(st.team)[rvIdx],me=myRv();const it=me.items[v.id]=me.items[v.id]||{};it.d=b.dataset.d;it.at=new Date().toISOString();rvSave();
+    if(b.dataset.d!=='fix'&&rvIdx<19){rvIdx++}$('#rv-card').innerHTML=rvCardHTML();live();if(b.dataset.d==='fix'){const f=$('[data-rv=target]');if(f)f.focus()}}
+  else if(a==='rv-pick'){const v=verbList(st.team)[rvIdx],me=myRv();const it=me.items[v.id]=me.items[v.id]||{};const p=new Set(it.pick||[]);p.has(b.dataset.m)?p.delete(b.dataset.m):p.add(b.dataset.m);it.pick=[...p];rvSave();$('#rv-card').innerHTML=rvCardHTML()}
   else if(a==='pick'){st.view='pick';render();scrollTo(0,0)}
   else if(a==='motion'){document.body.classList.toggle('still');b.classList.toggle('on',!document.body.classList.contains('still'))}
   else if(a==='home'){st.view='title';render();scrollTo(0,0)}
@@ -656,11 +776,13 @@ document.addEventListener('click',async e=>{
 function onField(e){
   const el=e.target.closest('[data-k]');if(!el||!st.team||st.view!=='stage')return;
   let v=el.type==='checkbox'?el.checked:el.value;
-  setp(sd(),el.dataset.k,v);save(did(st.team,st.stage));live();
+  setp(sd(),el.dataset.k,v);
+  if(st.stage==='s4'&&el.dataset.k==='pv'){const o=sd(),vb=verbById(v);o.v1=o.v1||{};if(vb){o.v1.verb=vb.n;o.v1.goal=vb.ex;o.v1.oMe=vb.o.map(i=>METHODS[i]).join(', ');o.v1.sMe=vb.s.map(i=>METHODS[i]).join(', ')}}
+  save(did(st.team,st.stage));live();
 }
-document.addEventListener('input',e=>{if(e.target.id==='heroName'){st.me=e.target.value;const w=$('#wname'),p=$('#pname'),n=nm()||'ㅇㅇㅇ';if(w)w.textContent=n;if(p)p.textContent=(n.length>7?n.slice(0,7)+'…':n)+' 교수님';return}onField(e)});
+document.addEventListener('input',e=>{const rv=e.target.closest('[data-rv]');if(rv&&st.team){const v=verbList(st.team)[rvIdx],me=myRv();me.items[v.id]=me.items[v.id]||{};me.items[v.id][rv.dataset.rv]=rv.value;rvSave();live();return}if(e.target.id==='heroName'){st.me=e.target.value;const w=$('#wname'),p=$('#pname'),n=nm()||'ㅇㅇㅇ';if(w)w.textContent=n;if(p)p.textContent=(n.length>7?n.slice(0,7)+'…':n)+' 교수님';return}onField(e)});
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='heroName')$('[data-act=start]').click()});
-document.addEventListener('change',e=>{const el=e.target;if(el.type==='radio'||el.type==='checkbox'||el.tagName==='SELECT')onField(e)});
+document.addEventListener('change',e=>{const el=e.target;if(el.closest('[data-rv]'))return;if(el.type==='radio'||el.type==='checkbox'||el.tagName==='SELECT')onField(e)});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if($('#fx').classList.contains('on'))$('#fx [data-act]').click();else $('#ai').hidden=true}});
 setInterval(()=>{if(st.view==='stage'){const S=STAGES.find(x=>x.id===st.stage),p=$('.pill.time');if(p&&S)p.innerHTML=timeInfo(S)}},30000);
 
@@ -677,7 +799,7 @@ render();
     try{res=await fetch(fn,{method:'POST',signal:opts.signal,headers:{'Content-Type':'application/json','apikey':C.supabaseAnonKey,'Authorization':'Bearer '+C.supabaseAnonKey,'x-ws-code':wsCode()},body:JSON.stringify({prompt:typeof prompt==='string'?prompt:JSON.stringify(prompt),tier:opts.modelTier||'default'})})}
     catch(e){if(e&&e.name==='AbortError')throw e;throw {code:'unavailable',message:String(e)}}
     if(!res.ok||!res.body){let b='';try{b=(await res.text()).slice(0,300)}catch(e){}
-      const msg=res.status===403?'입장 코드가 서버의 WORKSHOP_CODE와 다름 (현재 이 기기 코드: '+(wsCode()?'입력됨':'없음')+')':res.status===500&&/server_not_configured/.test(b)?'서버 설정 누락: Supabase Secrets에 OPENAI_API_KEY 또는 OPENAI_MODEL이 없음':res.status===502||res.status===429?'OpenAI 호출 실패 (OpenAI 응답 코드 '+((b.match(/"status":(\d+)/)||[])[1]||res.status)+'). 401은 API 키 오류, 404는 모델명 오류, 429는 결제·한도 문제':'HTTP '+res.status+' '+b;
+      const msg=res.status===403?'입장 코드가 서버의 WORKSHOP_CODE와 다름 (현재 이 기기 코드: '+(wsCode()?'입력됨':'없음')+')':res.status===500&&/server_not_configured/.test(b)?'서버 설정 누락: Supabase Secrets에 OPENAI_API_KEY 또는 OPENAI_MODEL이 없음':res.status===502||res.status===429?'OpenAI 호출 실패 (OpenAI 응답 코드 '+((b.match(/"status":(\d+)/)||[])[1]||res.status)+'). 401은 API 키 오류, 404는 모델명 오류, 429는 결제, 한도 문제':'HTTP '+res.status+' '+b;
       throw {code:res.status===429?'rate_limited':'ai_error',message:msg}}
     const rd=res.body.getReader(),dec=new TextDecoder();let buf='',text='',truncated=false;
     for(;;){const {value,done}=await rd.read();if(done)break;buf+=dec.decode(value,{stream:true});
