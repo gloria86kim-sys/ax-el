@@ -38,7 +38,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .art{position:relative;z-index:1;width:100%;margin:clamp(-250px,-17vw,-60px) 0 0}@media(max-width:760px){.art{margin-top:24px}}.art img{display:block;width:100%;height:auto}
 .start.mini{width:min(380px,92vw);padding:5px;margin:14px auto 0;box-shadow:0 10px 30px #00306a40}.start.mini input{font-size:16px;min-height:40px;padding:6px 14px}.btn.go{min-height:40px;padding:8px 22px;font-size:16px;background:linear-gradient(135deg,var(--vio),var(--pink))}
 .nametag{position:absolute;left:50%;top:2%;transform:translateX(-50%);background:#ffffffe6;border-radius:999px;padding:8px 22px;font-size:clamp(14px,1.8vw,20px);color:var(--ink);white-space:nowrap;box-shadow:0 10px 30px #00306a40}.nametag b{font-family:'Freesentation','Noto Sans KR';font-weight:900}
-.ground{background:#fe8739;padding:20px 16px 18px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;z-index:2;flex:1}
+.ground{background:#fe8739;padding:16px 16px 0;min-height:24px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;z-index:2;flex:1}
 .brand{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;padding:16px max(4vw,16px);position:relative;z-index:3;color:#fff}
 .brand b{font-weight:900;letter-spacing:0}.brand .dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--vio);margin-right:8px}
 .hero-c{position:relative;display:grid;justify-items:center;text-align:center;padding:10px 16px 0;z-index:2}
@@ -177,7 +177,7 @@ textarea{resize:vertical}input::placeholder,textarea::placeholder{color:#9c97bd}
 #fx h2{font-family:'Freesentation','Noto Sans KR';font-weight:900;font-size:clamp(24px,4vw,34px);margin:8px 0}
 #fx p{font-size:17px;margin:6px 0 20px}
 .badge{display:inline-block;background:var(--ink);color:#fff;border-radius:99px;padding:4px 16px;font-weight:700}
-.foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 20px;max-width:1240px;width:100%;margin:0 auto;font-size:13px;color:#2c2a63;padding-top:12px}.foot.dark{color:#2c2a63;padding:16px max(3vw,14px) 24px;max-width:1300px}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 20px;width:100%;margin:0;padding:18px max(4vw,16px);background:#005eb7;color:#fff;font-size:13px}.foot a{color:#fff;text-decoration:underline;text-underline-offset:3px;margin-left:6px}.foot span:last-child{font-weight:700}
 .alert{max-width:min(560px,92vw);margin:1.5cm auto 0;border-radius:22px;overflow:hidden;background:#fff;text-align:left;box-shadow:0 0 0 4px #ff3b4e55,0 18px 50px #00306a55;animation:pulse 2.4s ease-in-out infinite;position:relative;z-index:3}
 .alert-h{display:flex;align-items:center;gap:10px;padding:12px 20px;color:#fff;background:repeating-linear-gradient(135deg,#e8243a 0 22px,#c81d31 22px 44px)}
 .alert-h b{font-family:'Freesentation','Noto Sans KR';font-weight:900;font-size:clamp(18px,2.4vw,24px);letter-spacing:.02em}
@@ -333,7 +333,7 @@ function titleHTML(){
 <figure class="art"><img src="hero.webp" width="1600" height="837" alt="망토를 두른 두 히어로가 1위 트로피 양옆에 서 있는 일러스트"></figure>
 <div class="ground">
 
-<footer class="foot"><span>© 2026 Hyeyeong Kim. All rights reserved.</span><span>단국대학교 교육혁신원</span></footer></div>
+</div><footer class="foot"><span>© 2026 Hyeyeong Kim. All rights reserved. <a href="mailto:hykim26@dankook.ac.kr">hykim26@dankook.ac.kr</a></span><span>단국대학교 교육혁신원</span></footer>
 </section>`;
 }
 function pickHTML(){
@@ -545,7 +545,7 @@ function render(){
   if(st.view==='title'){app.innerHTML=titleHTML();return}
   if(st.view==='pick'){app.innerHTML=pickHTML();return}
   const inner=st.view==='fac'?facHTML():st.view==='book'?bookHTML():stageHTML();
-  app.innerHTML=`<div class="shell">${sideHTML()}${inner}</div><div class="shell-foot"><footer class="foot dark"><span>© 2026 Hyeyeong Kim. All rights reserved.</span><span>단국대학교 교육혁신원</span></footer></div>`;
+  app.innerHTML=`<div class="shell">${sideHTML()}${inner}</div><div class="shell-foot"><footer class="foot"><span>© 2026 Hyeyeong Kim. All rights reserved. <a href="mailto:hykim26@dankook.ac.kr">hykim26@dankook.ac.kr</a></span><span>단국대학교 교육혁신원</span></footer></div>`;
   if(st.view==='book')fillBook();
   if(st.view==='stage'){syncFields();live()}
 }
