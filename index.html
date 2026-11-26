@@ -178,6 +178,16 @@ textarea{resize:vertical}input::placeholder,textarea::placeholder{color:#9c97bd}
 #fx p{font-size:17px;margin:6px 0 20px}
 .badge{display:inline-block;background:var(--ink);color:#fff;border-radius:99px;padding:4px 16px;font-weight:700}
 .foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 20px;max-width:1240px;width:100%;margin:0 auto;font-size:13px;color:#2c2a63;padding-top:12px}.foot.dark{color:#2c2a63;padding:16px max(3vw,14px) 24px;max-width:1300px}
+.alert{max-width:780px;margin:10px auto 0;border-radius:22px;overflow:hidden;background:#fff;text-align:left;box-shadow:0 0 0 4px #ff3b4e55,0 18px 50px #00306a55;animation:pulse 2.4s ease-in-out infinite;position:relative;z-index:3}
+.alert-h{display:flex;align-items:center;gap:10px;padding:12px 20px;color:#fff;background:repeating-linear-gradient(135deg,#e8243a 0 22px,#c81d31 22px 44px)}
+.alert-h b{font-family:'Freesentation','Noto Sans KR';font-weight:900;font-size:clamp(18px,2.4vw,24px);letter-spacing:.02em}
+.alert-t{margin-left:auto;font-weight:700;font-size:14px;background:#00000033;border-radius:99px;padding:3px 12px}
+.blink{width:12px;height:12px;border-radius:50%;background:#fff;animation:blink 1s steps(2,start) infinite}
+.alert p{margin:0;padding:18px 24px 20px;font-size:clamp(16px,1.9vw,19px);line-height:1.7;color:#2c2a63;font-weight:500}
+.alert p b{color:#e8243a}
+@keyframes blink{to{visibility:hidden}}@keyframes pulse{50%{box-shadow:0 0 0 10px #ff3b4e22,0 18px 50px #00306a55}}
+body.still .alert,body.still .blink{animation:none}@media(prefers-reduced-motion:reduce){.alert,.blink{animation:none}}
+@media(max-width:560px){.alert-t{display:none}}
 </style>
 </head>
 <body>
@@ -318,7 +328,7 @@ function titleHTML(){
 <p class="hello">Welcome, AX-EL Professors</p>
 <h1>단국대를 구해주세요!</h1>
 <p class="welcome">AX-EL 펠로우 <b id="wname">${esc(n||'ㅇㅇㅇ')}</b>교수님, 환영합니다!</p><div class="start glass mini"><input id="heroName" value="${esc(st.me)}" placeholder="교수님 성함을 입력해 주세요" aria-label="교수님 성함" autocomplete="name"><button class="btn go" data-act="start">출발!</button></div>
-<p class="story-hero glass">2026년 겨울, 단국대에 비상이 걸렸습니다. AI가 과제를 대신 끝내 주면서 성적표는 멀쩡한데 학생의 진짜 실력은 보이지 않게 되었습니다. 평가를 다시 쓸 수 있는 건 수업을 가장 잘 아는 교수님들뿐. 다섯 스쿼드로 출동해 일곱 개 미션을 클리어하면, 단국대 평가 시스템이 복구되고 <b>AX 평가 가이드북</b>이 완성됩니다.</p></div>
+<section class="alert" role="alert"><div class="alert-h"><svg width="26" height="24" viewBox="0 0 26 24" aria-hidden="true"><path d="M13 1 L25 23 H1 Z" fill="#fff"/><rect x="11.8" y="8" width="2.4" height="8" rx="1.2" fill="#e8243a"/><circle cx="13" cy="19" r="1.4" fill="#e8243a"/></svg><b>EMERGENCY ALERT</b><span class="blink"></span><span class="alert-t">단국대 평가 시스템 경보 발령</span></div><p>2026년 겨울, 단국대에 비상이 걸렸습니다. AI가 과제를 대신 끝내 주면서 성적표는 멀쩡한데 학생의 진짜 실력은 보이지 않게 되었습니다. 평가를 다시 쓸 수 있는 건 수업을 가장 잘 아는 교수님들뿐. 다섯 스쿼드로 출동해 일곱 개 미션을 클리어하면, 단국대 평가 시스템이 복구되고 <b>AX 평가 가이드북</b>이 완성됩니다.</p></section></div>
 <figure class="art"><img src="hero.webp" width="1600" height="837" alt="망토를 두른 두 히어로가 1위 트로피 양옆에 서 있는 일러스트"></figure>
 <div class="ground">
 
