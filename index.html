@@ -35,10 +35,10 @@ button{font:inherit;color:inherit;cursor:pointer}
 .note{font-size:13px;color:var(--mut)}
 /* hero */
 .hero{position:relative;background:#005eb7;overflow:hidden;min-height:100vh;display:flex;flex-direction:column}
-.art{position:relative;z-index:1;width:100%;margin:0}.art img{display:block;width:100%;height:auto}
+.art{position:relative;z-index:1;width:100%;margin:clamp(28px,5vw,64px) 0 0}.art img{display:block;width:100%;height:auto}
 .start.mini{width:min(380px,92vw);padding:5px;margin:14px auto 10px;box-shadow:0 10px 30px #00306a40}.start.mini input{font-size:16px;min-height:40px;padding:6px 14px}.btn.go{min-height:40px;padding:8px 22px;font-size:16px;background:linear-gradient(135deg,var(--vio),var(--pink))}
 .nametag{position:absolute;left:50%;top:2%;transform:translateX(-50%);background:#ffffffe6;border-radius:999px;padding:8px 22px;font-size:clamp(14px,1.8vw,20px);color:var(--ink);white-space:nowrap;box-shadow:0 10px 30px #00306a40}.nametag b{font-family:'Freesentation','Noto Sans KR';font-weight:900}
-.ground{background:#fe8739;padding:12px 16px 40px;position:relative;z-index:2;flex:1}
+.ground{background:#fe8739;padding:20px 16px 18px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;z-index:2;flex:1}
 .brand{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;padding:16px max(4vw,16px);position:relative;z-index:3;color:#fff}
 .brand b{font-weight:900;letter-spacing:0}.brand .dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--vio);margin-right:8px}
 .hero-c{position:relative;display:grid;justify-items:center;text-align:center;padding:10px 16px 0;z-index:2}
@@ -55,7 +55,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .start{position:relative;z-index:3;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;padding:10px;border-radius:999px;margin:0 auto 14px;max-width:560px;background:#fffffff0}
 .start input{flex:1 1 220px;border:0;background:transparent;font:500 17px 'Noto Sans KR';padding:10px 16px;color:var(--ink);min-height:46px}
 .start input::placeholder{color:#7a74a3}
-.story-hero{max-width:680px;margin:0 auto;color:#2c2a63;font-size:15px;padding:14px 20px;position:relative;z-index:3}
+.story-hero{max-width:640px;margin:4px auto 0;background:#ffffffeb;text-align:left;color:#2c2a63;font-size:15px;font-size:15px;padding:14px 20px;position:relative;z-index:3}
 .vnav{display:flex;align-items:center;gap:18px}
 .vnav button{border:0;background:none;color:#fff;font-weight:500;padding:6px 0;font-size:15px;opacity:.85;min-height:40px}
 .vnav button.on{font-family:'Instrument Serif';font-style:italic;font-size:22px;opacity:1}
@@ -177,6 +177,7 @@ textarea{resize:vertical}input::placeholder,textarea::placeholder{color:#9c97bd}
 #fx h2{font-family:'Freesentation','Noto Sans KR';font-weight:900;font-size:clamp(24px,4vw,34px);margin:8px 0}
 #fx p{font-size:17px;margin:6px 0 20px}
 .badge{display:inline-block;background:var(--ink);color:#fff;border-radius:99px;padding:4px 16px;font-weight:700}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 20px;max-width:1240px;width:100%;margin:0 auto;font-size:13px;color:#2c2a63;padding-top:12px}.foot.dark{color:#2c2a63;padding:16px max(3vw,14px) 24px;max-width:1300px}
 </style>
 </head>
 <body>
@@ -316,11 +317,12 @@ function titleHTML(){
 <div class="ticker" aria-hidden="true"><div>${T}<span>${T}</span>${T}<span>${T}</span></div></div>
 <p class="hello">Welcome, AX-EL Professors</p>
 <h1>단국대를 구해주세요!</h1>
-<p class="welcome">AX-EL 펠로우 <b id="wname">${esc(n||'ㅇㅇㅇ')}</b>교수님, 환영합니다!</p><div class="start glass mini"><input id="heroName" value="${esc(st.me)}" placeholder="교수님 성함을 입력해 주세요" aria-label="교수님 성함" autocomplete="name"><button class="btn go" data-act="start">출발!</button></div></div>
+<p class="welcome">AX-EL 펠로우 <b id="wname">${esc(n||'ㅇㅇㅇ')}</b>교수님, 환영합니다!</p><div class="start glass mini"><input id="heroName" value="${esc(st.me)}" placeholder="교수님 성함을 입력해 주세요" aria-label="교수님 성함" autocomplete="name"><button class="btn go" data-act="start">출발!</button></div>
+<p class="story-hero glass">2026년 겨울, 단국대에 비상이 걸렸습니다. AI가 과제를 대신 끝내 주면서 성적표는 멀쩡한데 학생의 진짜 실력은 보이지 않게 되었습니다. 평가를 다시 쓸 수 있는 건 수업을 가장 잘 아는 교수님들뿐. 다섯 스쿼드로 출동해 일곱 개 미션을 클리어하면, 단국대 평가 시스템이 복구되고 <b>AX 평가 가이드북</b>이 완성됩니다.</p></div>
 <figure class="art"><img src="hero.webp" width="1600" height="837" alt="망토를 두른 두 히어로가 1위 트로피 양옆에 서 있는 일러스트"></figure>
 <div class="ground">
 
-<p class="story-hero glass">2026년 겨울, 단국대에 비상이 걸렸습니다. AI가 과제를 대신 끝내 주면서 성적표는 멀쩡한데 학생의 진짜 실력은 보이지 않게 되었습니다. 평가를 다시 쓸 수 있는 건 수업을 가장 잘 아는 교수님들뿐. 다섯 스쿼드로 출동해 일곱 개 미션을 클리어하면, 단국대 평가 시스템이 복구되고 <b>AX 평가 가이드북</b>이 완성됩니다.</p></div>
+<footer class="foot"><span>© 2026 Hyeyeong Kim. All rights reserved.</span><span>단국대학교 교육혁신원</span></footer></div>
 </section>`;
 }
 function pickHTML(){
@@ -532,7 +534,7 @@ function render(){
   if(st.view==='title'){app.innerHTML=titleHTML();return}
   if(st.view==='pick'){app.innerHTML=pickHTML();return}
   const inner=st.view==='fac'?facHTML():st.view==='book'?bookHTML():stageHTML();
-  app.innerHTML=`<div class="shell">${sideHTML()}${inner}</div>`;
+  app.innerHTML=`<div class="shell">${sideHTML()}${inner}</div><div class="shell-foot"><footer class="foot dark"><span>© 2026 Hyeyeong Kim. All rights reserved.</span><span>단국대학교 교육혁신원</span></footer></div>`;
   if(st.view==='book')fillBook();
   if(st.view==='stage'){syncFields();live()}
 }
