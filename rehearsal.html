@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>내 수업을 다시 쓰다 | SAVE DKU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'Freesentation';src:url('fonts/Freesentation-7Bold.woff2') format('woff2');font-weight:700;font-display:swap}
+@font-face{font-family:'Freesentation';src:url('fonts/Freesentation-9Black.woff2') format('woff2');font-weight:900;font-display:swap}
+:root{color-scheme:light;--ink:#2c2a63;--mut:#5b5880;--blue:#005eb7;--or:#f05d2d;--or2:#fe8739;--ok:#18a87a;--line:#d6e2f2;--bg:#f3f7fd}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 'Noto Sans KR',system-ui,sans-serif;overflow-x:clip}
+button{font:inherit;color:inherit;cursor:pointer}
+input,textarea,select{width:100%;font:15px/1.5 'Noto Sans KR',sans-serif;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-height:40px}
+textarea{resize:vertical}
+:focus-visible{outline:3px solid var(--or);outline-offset:2px}
+.bar{background:var(--blue);color:#fff;position:sticky;top:0;z-index:10}
+.bar-in{max-width:1180px;margin:0 auto;padding:10px max(3vw,14px);display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center}
+.bar b{font-weight:900}.bar a{color:#fff;text-decoration:none;opacity:.85;padding:6px 2px}.bar a.on{opacity:1;border-bottom:2px solid #fff}
+.tabs{display:flex;gap:16px;margin-left:auto;flex-wrap:wrap}.net{font-size:12px;opacity:.8;width:100%}
+main{max-width:1180px;margin:0 auto;padding:18px max(3vw,14px) 40px;display:grid;gap:16px}
+.hero2{background:linear-gradient(135deg,#005eb7,#2f80d3);color:#fff;border-radius:24px;padding:clamp(20px,3vw,34px)}
+.hero2.op{background:linear-gradient(135deg,#2c2a63,#4b4a8f)}
+.kick{font-family:'Instrument Serif';font-style:italic;font-size:20px;margin:0;opacity:.9}
+.hero2 h1,.bf h1{font-family:'Freesentation','Noto Sans KR';font-weight:900;font-size:clamp(30px,4.6vw,48px);line-height:1.1;margin:4px 0 10px}
+.hero2 p{margin:0 0 12px;max-width:70ch;word-break:keep-all}
+.who{display:flex;flex-wrap:wrap;gap:10px}.who label{display:flex;align-items:center;gap:8px;font-size:14px;background:#ffffff22;border-radius:12px;padding:6px 10px}.who input,.who select{width:180px;min-height:36px}
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.steps button{width:100%;text-align:left;border:1px solid var(--line);background:#fff;border-radius:14px;padding:10px 14px;min-height:56px}
+.steps b{display:block;font-size:12px;color:var(--mut)}.steps .on button{border-color:var(--or);box-shadow:0 0 0 3px #f05d2d22}.steps .done button{background:#eaf7f2}
+.steps button:disabled{opacity:.5;cursor:not-allowed}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:clamp(16px,2.4vw,26px)}
+.card h2{margin:0 0 4px;font-size:21px}.card .sub{color:var(--mut);margin:0 0 14px;word-break:keep-all}.narrow{max-width:460px}
+.sec{font-size:15px;margin:18px 0 8px;padding-left:8px;border-left:4px solid var(--blue)}
+.btn{border:0;border-radius:999px;background:var(--ink);color:#fff;font-weight:700;padding:10px 20px;min-height:44px;display:inline-flex;align-items:center}
+.btn.big{background:linear-gradient(135deg,var(--or),var(--or2));font-size:17px;padding:12px 28px}.btn:disabled{opacity:.5}
+.ghost{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 16px;min-height:40px;text-decoration:none;color:var(--ink);display:inline-flex;align-items:center}.ghost.s{padding:5px 12px;min-height:34px;font-size:14px}.ghost:disabled{opacity:.6}
+.up{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}#pastewrap{display:grid;gap:8px}
+.act{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center}
+.warnbox{background:#fff4ec;border:1px solid #ffc9a8;border-radius:14px;padding:12px 14px;margin-top:10px}
+.busy{display:flex;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 16px;font-weight:500}
+.spin{width:18px;height:18px;border:3px solid #cfe0f5;border-top-color:var(--blue);border-radius:50%;animation:sp 1s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+.fgrid{display:grid;gap:10px}.fgrid.grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}.fgrid.rows{grid-template-columns:1fr}
+.fd{display:grid;gap:4px}.fd>span{font-size:13px;font-weight:500;display:flex;flex-wrap:wrap;gap:6px;align-items:center}.fd.long{grid-column:1/-1}
+.bd{font-size:11px;font-weight:700;border-radius:99px;padding:1px 8px;background:#e8eef7;color:var(--mut)}.bd.ok{background:#e2f6ee;color:#0e7a57}.bd.warn{background:#ffe9dc;color:#b4441b}.bd.mu{background:#eef0f4;color:#666}
+.scroll{overflow-x:auto}
+.et,.ot{width:100%;border-collapse:collapse;font-size:13px}.et th,.et td,.ot th,.ot td{border:1px solid var(--line);padding:5px;vertical-align:top;text-align:left}.et th,.ot th{background:#eef3fa;font-weight:500}
+.et textarea{min-width:120px;font-size:13px;min-height:52px}.et tr.uv td{background:#fff4ec}.c{text-align:center}.note{color:var(--mut);font-size:13px}.warn{color:#b4441b}
+.q{border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}.qt{margin:0 0 10px;font-weight:500}
+.pill{display:inline-block;background:#eef3fa;border-radius:99px;padding:2px 10px;font-size:12px;font-weight:700;color:var(--blue);margin-right:4px}.pill.on{background:var(--or);color:#fff}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}.opt{border:1px solid var(--line);background:#fff;border-radius:12px;padding:8px 12px;min-height:40px}.opt.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.els{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));gap:10px;margin:10px 0}
+.el{border-radius:16px;padding:12px 14px;background:#fff;border:2px solid var(--c);display:grid;gap:2px}.el b{font-size:26px;font-family:'Freesentation','Noto Sans KR';font-weight:900;color:var(--c)}.el .st{font-weight:700;color:var(--c)}.el .eln{font-weight:700}
+.prio{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:4px 0 8px}
+.says{background:#fff7f2;border-color:#ffd4bd}.says h2{font-family:'Freesentation','Noto Sans KR';font-weight:900}
+.says figure{margin:12px 0;background:#fff;border-radius:16px;padding:14px 16px;border-left:5px solid var(--or)}.says blockquote{margin:0 0 6px;font-size:18px;font-weight:700;word-break:keep-all}.says figcaption{font-size:13px;color:var(--mut)}
+.jd{border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:12px}.jh{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px}
+.vd{flex:none;font-size:12px;font-weight:700;border-radius:99px;padding:2px 10px;color:#fff}.v-met{background:var(--ok)}.v-partial{background:#e09a1b}.v-unmet{background:var(--or)}.v-check{background:#8a8fa8}.v-na{background:#b9bdd0}
+.jd dl{display:grid;grid-template-columns:110px minmax(0,1fr);gap:4px 12px;margin:0;font-size:14px}.jd dt{color:var(--mut)}.jd dd{margin:0;word-break:keep-all}.pre{white-space:pre-wrap}
+@media(max-width:640px){.jd dl{grid-template-columns:1fr}.steps{grid-template-columns:1fr}}
+.cat{font-size:11px;font-weight:700;border-radius:6px;padding:1px 6px}.cat-gov{background:#e3eefb;color:#0b4f9c}.cat-dku{background:#fff0e0;color:#a24a00}.cat-sig{background:#efe9ff;color:#4b3aa6}
+.tag{display:inline-block;margin-top:4px;background:#fff1c9;color:#7a5a00;border-radius:6px;padding:1px 8px;font-size:12px;font-weight:700}
+.fx{background:#f6f9fd;border-radius:12px;padding:10px 12px;margin-top:10px}.fxh{margin:0 0 6px;font-size:14px}.bf,.af{margin:4px 0;font-size:14px}.bf small,.af small{display:inline-block;width:34px;color:var(--mut)}.af{color:#0e5a8a}
+.dec{display:flex;gap:6px;margin:8px 0}.db{border:1px solid var(--line);background:#fff;border-radius:10px;padding:6px 14px;min-height:36px}.db.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.sh{border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin-top:8px}.sh summary{cursor:pointer;font-weight:500}.sh dl{display:grid;grid-template-columns:100px 1fr;gap:4px 10px;font-size:14px}.sh dd{margin:0}
+.opt-tabs{display:flex;gap:8px;flex-wrap:wrap}.opt-tabs button{border:1px solid #ffffff66;background:transparent;color:#fff;border-radius:99px;padding:6px 14px;min-height:36px}.opt-tabs button.on{background:#fff;color:var(--ink)}.opt-tabs .ghost{color:var(--ink)}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 20px;padding:18px max(4vw,16px);background:var(--blue);color:#fff;font-size:13px}.foot a{color:#fff}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:999px;padding:10px 18px;font-size:14px;z-index:60;opacity:0;pointer-events:none;transition:opacity .3s;max-width:90vw}#toast.on{opacity:1}
+/* 브리핑 */
+body.brief-mode{background:#0b2a55;color:#fff}body.brief-mode .bar,body.brief-mode .foot{display:none}body.brief-mode main{max-width:1400px}
+.bf{background:#0f3770;border-radius:24px;padding:clamp(20px,3vw,40px)}.bf h1 small{font-size:.5em;opacity:.7}.bf .note{color:#c9d8ef}
+.bbars{display:grid;gap:10px;margin-top:14px}.bb{display:grid;grid-template-columns:150px minmax(0,1fr) 110px 170px;gap:12px;align-items:center;font-size:18px}.bt{height:22px;background:#ffffff22;border-radius:99px;overflow:hidden}.bt i{display:block;height:100%;background:linear-gradient(90deg,#fe8739,#ffd76a)}.bb small{color:#c9d8ef}
+@media(max-width:800px){.bb{grid-template-columns:1fr 70px}.bb .bt,.bb small{grid-column:1/-1}}
+.bteams{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:16px}.bteams div{background:#ffffff14;border-radius:14px;padding:10px 14px}
+.case .cs{background:#fff;color:var(--ink);border-radius:18px;padding:14px 18px;margin-top:12px;font-size:clamp(18px,2.2vw,26px)}.case .cs small{font-size:14px;color:var(--mut)}.case .cs p{margin:4px 0 0}.case .say{background:#fff1e6;border-left:8px solid var(--or)}
+.bf.q{text-align:center;padding:60px 20px}.bf.q h1{font-size:clamp(34px,5vw,64px)}
+</style>
+</head>
+<body>
+<header class="bar"><div class="bar-in"><b>SAVE DKU</b><span>미션 02 내 수업을 다시 쓰다</span><nav class="tabs"><a href="./">미션으로 돌아가기</a><a href="#prof">교수 화면</a><a href="#op">운영자</a><a href="#brief">브리핑</a></nav><span class="net" id="net">연결 준비 중</span></div></header>
+<main id="app"></main>
+<footer class="foot"><span>© 2026 Hyeyeong Kim. All rights reserved. <a href="mailto:hykim26@dankook.ac.kr">hykim26@dankook.ac.kr</a></span><span><b>단국대학교 교육혁신원</b></span></footer>
+<div id="toast" role="status"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="config.js"></script>
+<script src="m2_data.js"></script>
+<script src="m2.js"></script>
+</body>
+</html>

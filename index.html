@@ -236,9 +236,10 @@ const STAGES=[
 {id:'s1',n:1,title:'상황 브리핑',sub:'우리 대학의 평가 현황을 본다',time:['10:10','10:35'],badge:'Scout',sec:'장 도입',
  story:'본부에서 긴급 브리핑이 도착했습니다. 첫 번째 미니특강 「단국대 강의계획서 분석」을 보면서, 우리 영역에서 평가가 가장 먼저 무너진 지점 세 곳을 찍어 주세요.',
  mission:'우리 영역의 평가 쟁점 3가지를 학생 역량 관점으로 적어 주세요',req:['i1'],draft:['i1','i2','i3']},
-{id:'s2',n:2,title:'진단 스캔',sub:'내 수업을 진단한다',time:['10:35','11:10'],badge:'Scanner',sec:'1절 기존 평가 진단',
- story:'이제 교수님 수업에 스캐너를 대 볼 차례입니다. AI가 대신해도 통과되는 평가에는 빨간불이 켜집니다. 팀원 세 과목을 스캔하고 증거 공백을 정리해 주세요.',
- mission:'강의계획서의 학습목표, 평가방법, AI 사용 조건을 보고 신호등으로 판정해 주세요',req:['c1.course','gap'],draft:['c1.miss','c2.miss','c3.miss','gap']},
+{id:'s2',n:2,title:'내 수업을 다시 쓰다',sub:'내 수업을 진단한다',time:['10:35','11:10'],badge:'Scanner',sec:'1절 기존 평가 진단',
+ story:'이제 교수님 수업에 스캐너를 대 볼 차례예요. 강의계획서 한 과목을 올리면 학습목표, 수업활동, 과제와 평가, 채점 기준, AI 활용 안내를 진단하고 바로 쓸 수 있는 수정 문구까지 드려요. 결과는 교수님만 보실 수 있어요.',
+ mission:'내 강의계획서를 진단하고 수정을 확정한 뒤, 팀이 함께 증거 공백을 정리해요',
+ req:['gap'],draft:['gap']},
 {id:'s3',n:3,title:'증거 판별 훈련',sub:'좋은 평가의 기준을 배운다',time:['11:10','11:30'],badge:'Evidence Eye',sec:'공통 용어',
  story:'진짜 증거를 가려내는 눈을 장착할 시간입니다. 두 번째 미니특강 「AX 시대 좋은 평가란?」을 듣고, 여덟 개 아이템을 행동, 증거, 방법으로 판별해 주세요.',
  mission:'행동, 증거, 평가방법을 구분해 볼까요?',req:[],draft:[]},
@@ -513,9 +514,8 @@ function bodyHTML(S,d){
   const o=sd();
   if(S.id==='s1')return `<section class="card"><h3>안개 지대 표시</h3><p class="sub">특강 자료에서 우리 영역(${esc(d.name)})의 평가가 학생 역량을 놓치고 있는 지점을 학생 역량 관점으로 적어 주세요</p>
 ${ta('i1','쟁점 1',`예: ${d.diag}`,2)}${ta('i2','쟁점 2','',2)}${ta('i3','쟁점 3','',2)}</section>`;
-  if(S.id==='s2')return `<div class="grid3">${['c1','c2','c3'].map((c,i)=>`<section class="card"><h3>스캔 대상 ${i+1}</h3><p class="sub">${i===0?'팀원 각자 자기 과목을 하나씩 맡아요':'&nbsp;'}</p>
-${tx(c+'.course','과목명','예: 현대소설의 이해')}${tx(c+'.prof','담당 교수')}${ta(c+'.goal','핵심 학습목표','',2)}${ta(c+'.assess','현재 평가방법과 비율','예: 중간 30, 기말 40, 감상문 30',2)}${sel(c+'.ai','AI 사용 조건(강의계획서 기재)',AIOPT)}${lights(c+'.light')}${ta(c+'.miss','AI가 대신하면 보이지 않게 되는 학생 역량','',2)}</section>`).join('')}</div>
-<section class="card" style="margin-top:16px"><h3>팀 요약 | 증거 공백 목록</h3><p class="sub">세 과목을 비교해 지금 평가로는 확인하기 어려운 학생 역량을 정리해요. 가이드북 1절의 재료가 됩니다</p>${ta('gap','증거 공백 목록','예: 해석의 근거를 스스로 찾는 과정, 처음 보는 글에 대한 판단',4)}</section>`;
+  if(S.id==='s2')return `<section class="card" style="background:linear-gradient(135deg,#005eb7,#2f80d3);color:#fff;border:0"><h3 style="font-family:'Freesentation','Noto Sans KR';font-weight:900;font-size:28px;margin:0 0 6px">내 수업을 다시 쓰다</h3><p style="margin:0 0 14px;max-width:62ch;word-break:keep-all">강의계획서 불러오기, 수업 의도 확인하기, 내 수업 평가 성적표의 3단계로 진행해요. 진단, 보완표 PDF와 수정 강의계획서 PDF를 받을 수 있어요.</p><a class="btn big" href="rehearsal.html#prof" style="text-decoration:none;display:inline-flex">진단 시작하기</a></section>
+<section class="card" style="margin-top:16px"><h3>팀 요약 | 증거 공백 목록</h3><p class="sub">각자 진단을 마친 뒤, 지금 평가로는 확인하기 어려운 학생 역량을 함께 정리해요. 가이드북 1절의 재료가 됩니다</p>${ta('gap','증거 공백 목록','예: 해석의 근거를 스스로 찾는 과정, 처음 보는 글에 대한 판단',4)}</section>`;
   if(S.id==='s3'){const a=o.ans||{};const sc=QUIZ.filter((q,i)=>a['q'+i]===q[1]).length;
     return `<section class="card"><h3>감정대 | 행동인가, 증거인가, 방법인가</h3><p class="sub">정답 1개당 20 XP. 감정 결과는 팀 전체에 공유됨 | 현재 ${sc}/${QUIZ.length}</p><div class="quiz">${QUIZ.map((q,i)=>{const v=a['q'+i];const cls=v?(v===q[1]?'ok':'no'):'';
     return `<div class="qi ${cls}"><span>${esc(q[0])}</span><div class="ops">${['행동','증거','방법'].map(x=>`<button class="${v===x?'pick':''}" data-act="quiz" data-q="${i}" data-v="${x}">${x}</button>`).join('')}</div>${v?`<div class="fb">${v===q[1]?'정확해요':'정답은 '+q[1]}: ${esc(q[2])}</div>`:''}</div>`}).join('')}</div></section>`}
@@ -651,7 +651,7 @@ ${ringSVG()}</section>
 function facHTML(){
   const it=auctionItems();
   return `<main class="main hq"><section class="glass brief"><div><div class="mno">Headquarters</div><h2>본부 관제실</h2><p class="story">다섯 스쿼드의 미션 진행과 산출물 상태를 실시간으로 확인합니다. 아직 만들지 않은 장의 AI 원고를 한 번에 생성할 수 있습니다.</p>
-<div style="display:flex;flex-wrap:wrap;gap:8px"><button class="btn aigen" data-act="genall">미생성 장 AI 원고 일괄 생성</button><button class="ghost" data-act="book">가이드북 랩</button></div></div>${ringSVG()}</section>
+<div style="display:flex;flex-wrap:wrap;gap:8px"><button class="btn aigen" data-act="genall">미생성 장 AI 원고 일괄 생성</button><button class="ghost" data-act="book">가이드북 랩</button><a class="ghost" href="rehearsal.html#op" style="text-decoration:none">미션 02 운영자</a><a class="ghost" href="rehearsal.html#brief" target="_blank" style="text-decoration:none">평가 중간고사 브리핑</a></div></div>${ringSVG()}</section>
 <section class="card scroll"><table class="stack"><thead><tr><th>스쿼드</th><th>미션</th><th>XP</th><th>양보 불가 행동</th><th>장 원고</th></tr></thead><tbody>
 ${ORDER.map(t=>{const s=stats(t),s5=cache[did(t,'s5')]||{},dr=(cache[did(t,'draft')]||{}).md;return `<tr><td><b style="color:${DOM[t].color}">${DOM[t].code}</b><br><small class="note">${t}장 ${esc(DOM[t].name)}</small></td><td><span class="dots">${STAGES.map(x=>`<i class="${(cache[did(t,x.id)]||{}).done?'on':''}" title="${esc(x.title)}"></i>`).join('')}</span></td><td>${s.xp}</td><td>${esc(s5.final||'-')}</td><td>${dr?'AI 원고 ✓':'조립본'}</td></tr>`}).join('')}</tbody></table></section>
 <section class="card"><h3>전체 경매판</h3><div class="bars">${barsHTML(it)}</div></section></main>`;
