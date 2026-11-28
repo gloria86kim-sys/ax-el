@@ -229,7 +229,7 @@ async function makeComments() {
 [대상]
 ${cand.map(j => `${j.crit}: 평가 문구 "${j.quote}" / 확인하기 어려운 학생 수행: ${j.missed}`).join('\n')}
 [규칙]
-- 대상마다 1개, 가상의 학생 1인칭으로 1~2문장. 평가 문구 속 구체적 허점(분량, 참고문헌 수, 발언 횟수, 형식 충족, 팀 기여, 완성품 외형, AI 사용 내역 체크, 출석 등) 한 가지를 잡음
+- 대상마다 1개, 가상의 학생 1인칭으로 짧은 1~2문장. 전체 70자 이내. 친구에게 말하듯 가벼운 구어체(~했지롱, ~했어요, ~죠?, 히히, 야호 같은 말맛 허용). 설명문이나 분석문처럼 쓰지 않음. 평가 문구 속 구체적 허점(분량, 참고문헌 수, 발언 횟수, 형식 충족, 팀 기여, 완성품 외형, AI 사용 내역 체크, 출석 등) 한 가지를 잡음
 - 말투는 능청, 자랑, 순진한 척, 억울한 척, 지나치게 논리적인 척 중에서 대상마다 다르게 고르고, 시작 문구도 서로 다르게 씀
 - 교수의 능력, 인격, 외모를 놀리지 않고, 실제 학생이 그렇게 했다고 단정하지 않음. 가운뎃점과 대시 쓰지 않음
 - 원문과 맞지 않거나 허점이 모호하면 그 대상은 skip을 true로 둠
@@ -237,7 +237,7 @@ ${cand.map(j => `${j.crit}: 평가 문구 "${j.quote}" / 확인하기 어려운 
 [출력] JSON 하나만: {"comments":[{"crit":"","skip":false,"tone":"","comment":""}]}`;
   const j = await aiJSON(p, 'quick');
   const seen = new Set();
-  d.comments = (j.comments || []).filter(c => c && !c.skip && c.comment && cand.some(x => x.crit === c.crit)).filter(c => { const k = c.comment.slice(0, 6); if (seen.has(k) || seen.has(c.tone)) return false; seen.add(k); seen.add(c.tone); return true })
+  d.comments = (j.comments || []).filter(c => c && !c.skip && c.comment && c.comment.length <= 90 && !/습니다\.|입니다\./.test(c.comment) && cand.some(x => x.crit === c.crit)).filter(c => { const k = c.comment.slice(0, 6); if (seen.has(k) || seen.has(c.tone)) return false; seen.add(k); seen.add(c.tone); return true })
     .slice(0, 2).map(c => { const jd = cand.find(x => x.crit === c.crit); return { crit: c.crit, tone: c.tone, comment: c.comment.replace(/[·—–]/g, ', '), quote: jd.quote, refs: jd.refs, missed: jd.missed, fix: (jd.fixes[0] || {}).k || null } });
   save();
 }
